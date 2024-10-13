@@ -2,7 +2,8 @@ name: Docker CI Workflow
 
 on:
   merge_group:
-
+    name: Docker CI Workflow
+    types: [pull_request]
   jobs:
     docker:
         runs-on: ubuntu_latest
