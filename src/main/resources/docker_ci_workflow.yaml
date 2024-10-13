@@ -2,10 +2,8 @@ name: Docker CI Workflow
 
 on:
   merge_group:
-    branches: [ master ]
 
-
-jobs:
+  jobs:
     docker:
         runs-on: ubuntu_latest
         steps:
