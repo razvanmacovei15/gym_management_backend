@@ -63,15 +63,15 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
- # Restart the Docker container on a remote server after pushing the image
-    - name: Restart Docker Container
-      uses: appleboy/ssh-action@v1.1.0
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASSWORD }} # or private key instead
-        script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-          docker stop my-container || true  # Stop if it's running
-          docker rm my-container || true    # Remove existing container
-          docker run -d --name my-container ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+    # Restart the Docker container on a remote server after pushing the image
+#    - name: Restart Docker Container
+#      uses: appleboy/ssh-action@v1.1.0
+#      with:
+#        host: ${{ secrets.SSH_HOST }}
+#        username: ${{ secrets.SSH_USERNAME }}
+#        password: ${{ secrets.SSH_PASSWORD }} # or private key instead
+#        script: |
+#          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+#          docker stop my-container || true  # Stop if it's running
+#          docker rm my-container || true    # Remove existing container
+#          docker run -d --name my-container ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
