@@ -1,12 +1,13 @@
 version: '3'
 services:
-  gym_management_backend:
+  backend:
     image: gym_management
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8010:8010"
+    container_name: gym_management_backend
     volumes:
       - ./target:/app/target # This mounts your local target folder into the container
     restart: always
