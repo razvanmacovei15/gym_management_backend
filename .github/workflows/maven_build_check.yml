@@ -76,6 +76,6 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}  # Use the private key for authentication
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-          docker stop my-container || true  # Stop if it's running
-          docker rm my-container || true    # Remove existing container
-          docker run -d --name my-container ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+          docker stop dazzling_diffie || true  # Stop if it's running
+          docker rm dazzling_diffie || true    # Remove existing container
+          docker run -d --name backend ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
