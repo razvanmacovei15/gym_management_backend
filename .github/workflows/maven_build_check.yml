@@ -67,15 +67,15 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
 
-    # Restart the Docker container on a remote server after pushing the image
-    - name: Restart Docker Container
-      uses: appleboy/ssh-action@v1.1.0
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}  # Use the private key for authentication
-        script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-          docker stop dazzling_diffie || true  # Stop if it's running
-          docker rm dazzling_diffie || true    # Remove existing container
-          docker run -d --name backend ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+#      # Restart the Docker container on a remote server after pushing the image
+#    - name: Restart Docker Container
+#      uses: appleboy/ssh-action@v1.1.0
+#      with:
+#        host: ${{ secrets.SSH_HOST }}
+#        username: ${{ secrets.SSH_USERNAME }}
+#        key: ${{ secrets.SSH_PRIVATE_KEY }}  # Use the private key for authentication
+#        script: |
+#          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+#          docker stop dazzling_diffie || true  # Stop if it's running
+#          docker rm dazzling_diffie || true    # Remove existing container
+#          docker run -d --name backend ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
