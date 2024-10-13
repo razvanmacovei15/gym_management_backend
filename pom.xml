@@ -10,7 +10,7 @@
     </parent>
     <groupId>tradatorii</groupId>
     <artifactId>gym_management</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>gym_management</name>
     <description>gym_management</description>
     <url/>
