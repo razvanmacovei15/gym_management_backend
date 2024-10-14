@@ -82,4 +82,4 @@ jobs:
 #          docker rm dazzling_diffie || true    # Remove existing container
 #          docker run -d --name backend ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
 
-#lalala
+#lalaladocker stop gym_backend_spring_boot_server
