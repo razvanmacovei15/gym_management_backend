@@ -17,4 +17,4 @@ ARG JAR_FILE=target/gym_management-1.0.0.jar
 ADD ${JAR_FILE} gym_management-1.0.0.jar
 
 # Run the jar file
-ENTRYPOINT ["java","-Djava.security.egmvn d=file:/dev/./urandom","-jar","/gym_management.jar"]
+ENTRYPOINT ["java","-Djava.security.egmvn d=file:/dev/./urandom","-jar","/gym_management-1.0.0.jar"]
