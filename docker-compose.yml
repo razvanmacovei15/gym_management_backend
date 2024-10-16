@@ -15,9 +15,10 @@ services:
 
   gym-app:
     container_name: gym_app
+
     build:
       context: .  # Build from the current directory
-      dockerfile: Dockerfile  # Assuming you have a Dockerfile to build your Spring Boot app
+      dockerfile: Dockerfile # Assuming you have a Dockerfile to build your Spring Boot app
     environment:
       SPRING_APPLICATION_NAME: gym_management
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
