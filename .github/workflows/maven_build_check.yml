@@ -70,16 +70,15 @@ jobs:
 
 #    # Restart the Docker container on a remote server after pushing the image
 
-#    - name: Restart Docker Container
-#      uses: appleboy/ssh-action@v1.1.0
-#      with:
-#        host: ${{ secrets.SSH_HOST }}
-#        username: ${{ secrets.SSH_USERNAME }}
-#        key: ${{ secrets.SSH_PRIVATE_KEY }}  # Use the private key for authentication
-#        script: |
-#          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-#          docker stop dazzling_diffie || true  # Stop if it's running
-#          docker rm dazzling_diffie || true    # Remove existing container
-#          docker run -d --name backend ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+    - name: Restart Docker Container
+      uses: appleboy/ssh-action@v1.1.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PASSWORD }}  # Use the private key for authentication
+        script: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+          docker stop backnd_server || true  # Stop if it's running
+          docker rm backend_server || true    # Remove existing container
+          docker run -d --name backend_server ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
 
-#lalaladocker stop gym_backend_spring_boot_server
