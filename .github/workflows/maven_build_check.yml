@@ -20,8 +20,8 @@ jobs:
 
     steps:
     # Checkout the repository code
-#    - name: Checkout code
-#      uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 #
 #    # Set up JDK 23 (or another version if your project requires it)
 #    - name: Set up JDK 23
