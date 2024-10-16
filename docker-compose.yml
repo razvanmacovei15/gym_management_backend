@@ -14,6 +14,7 @@ services:
       - postgres_data:/var/lib/postgresql/data  # Persistent storage
 
   gym-app:
+    container_name: gym_app
     build:
       context: .  # Build from the current directory
       dockerfile: Dockerfile  # Assuming you have a Dockerfile to build your Spring Boot app
