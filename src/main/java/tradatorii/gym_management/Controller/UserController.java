@@ -32,6 +32,6 @@ public class UserController {
 
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Ramo te rog ia-mi un PopCola sa am la tine acasa cand mai vin!\n If Alex is reading, whats up brother? \n Raul scuze ca am uitat de seminar:D");
+        return ResponseEntity.ok("Ramo te rog ia-mi un PopCola sa am la tine acasa cand mai vin!\n If Alex is reading, whats up brother? \n Raul scuze ca am uitat de seminar:D \n tried something in new branch");
     }
 }
