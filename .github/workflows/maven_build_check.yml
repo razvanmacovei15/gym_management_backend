@@ -78,7 +78,7 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD}}
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-          docker stop backnd_server || true  # Stop if it's running
+          docker stop backend_server || true  # Stop if it's running
           docker rm backend_server || true    # Remove existing container
           docker run -d --name backend_server ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
 
