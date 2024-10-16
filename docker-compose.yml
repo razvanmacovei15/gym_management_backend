@@ -3,7 +3,8 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: gym_postgres
+    container_name: gym_database
+
     environment:
       POSTGRES_DB: postgres  # Database name to create
       POSTGRES_USER: postgres  # Default user
