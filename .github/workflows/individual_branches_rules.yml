@@ -1,7 +1,8 @@
 # Controls when the action will run
 on:
   push:
-    branches: [frosty_dev]  # Or your default branch
+    branches: 
+      - frosty_dev # Or your default branch
 
 jobs:
   build:
