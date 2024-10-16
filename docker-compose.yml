@@ -2,11 +2,12 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres
     container_name: gym_database
+    network_mode: bridge
 
     environment:
-      POSTGRES_DB: postgres  # Database name to create
+      POSTGRES_DB: cats  # Database name to create
       POSTGRES_USER: postgres  # Default user
       POSTGRES_PASSWORD: Madagascar1523/  # User password
     ports:
@@ -16,13 +17,13 @@ services:
 
   gym-app:
     container_name: gym_app
-
+    network_mode: bridge
     build:
       context: .  # Build from the current directory
       dockerfile: Dockerfile # Assuming you have a Dockerfile to build your Spring Boot app
     environment:
       SPRING_APPLICATION_NAME: gym_management
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cats
+      SPRING_DATASOURCE_URL: jdbc:postgresql://razvandummy.go.ro:5432/cats
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Madagascar1523/
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
