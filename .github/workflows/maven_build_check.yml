@@ -70,15 +70,9 @@ jobs:
 
 #    # Restart the Docker container on a remote server after pushing the image
 
-    - name: Restart Docker Container
-      uses: appleboy/ssh-action@v1.1.0
+    - name: Run docker-compose
+      uses: hoverkraft-tech/compose-action@v2.0.1
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASSWORD}}
-        script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-          docker stop backend_server || true  # Stop if it's running
-          docker rm backend_server || true    # Remove existing container
-          docker run -d --name backend_server ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
+          compose-file: "./docker-compose.yml"
+      
 
