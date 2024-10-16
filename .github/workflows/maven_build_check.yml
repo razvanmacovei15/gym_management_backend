@@ -82,4 +82,3 @@ jobs:
           docker rm backend_server || true    # Remove existing container
           docker run -d --name backend_server ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
 
-#lalala
