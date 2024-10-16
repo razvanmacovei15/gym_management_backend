@@ -75,7 +75,7 @@ jobs:
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secres.SSH_PASSWORD}}
+        password: ${{ secrets.SSH_PASSWORD}}
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
           docker stop backnd_server || true  # Stop if it's running
