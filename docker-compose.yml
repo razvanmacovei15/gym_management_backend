@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile # Assuming you have a Dockerfile to build your Spring Boot app
     environment:
       SPRING_APPLICATION_NAME: gym_management
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cats
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Madagascar1523/
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
