@@ -76,13 +76,8 @@ jobs:
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASSWORD }}
+        key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
           whoami
-          docker ps
-          docker pull ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-          docker stop gym_app
-          docker rm gym_app
-          docker run --network gym_management_default -d -p 8010:8010 --name gym_app ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
-
+          
