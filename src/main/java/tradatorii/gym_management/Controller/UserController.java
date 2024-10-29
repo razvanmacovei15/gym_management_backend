@@ -30,6 +30,7 @@ public class UserController {
         return user;
     }
 
+
     @DeleteMapping
     public ResponseEntity<Long> deleteUser(@RequestParam Long id)
     {
@@ -40,5 +41,7 @@ public class UserController {
     public List<User> getAllUsers()
     {
         return this.userService.getAllUsers();
+
     }
 }
+

@@ -1,13 +1,37 @@
-version: '3'
+version: '3.8'
+
 services:
-  backend:
-    image: gym_management
-    build:
-      context: .
-      dockerfile: Dockerfile
+  postgres:
+    image: postgres
+    container_name: gym_database
+    network_mode: bridge
+
+    environment:
+      POSTGRES_DB: cats  # Database name to create
+      POSTGRES_USER: postgres  # Default user
+      POSTGRES_PASSWORD: Madagascar1523/  # User password
     ports:
-      - "8010:8010"
-    container_name: gym_management_backend
+      - "5432:5432"  # Exposing PostgreSQL to the host
     volumes:
-      - ./target:/app/target # This mounts your local target folder into the container
-    restart: always
+      - postgres_data:/var/lib/postgresql/data  # Persistent storage
+
+  gym-app:
+    container_name: gym_app
+    network_mode: bridge
+    build:
+      context: .  # Build from the current directory
+      dockerfile: Dockerfile # Assuming you have a Dockerfile to build your Spring Boot app
+    environment:
+      SPRING_APPLICATION_NAME: gym_management
+      SPRING_DATASOURCE_URL: jdbc:postgresql://razvandummy.go.ro:5432/cats
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Madagascar1523/
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_H2_CONSOLE_ENABLED: "true"  # This is for H2, make sure your setup actually requires it
+    ports:
+      - "8010:8010"  # Map host port 8010 to container port 8010
+    depends_on:
+      - postgres  # Ensure postgres starts before the app
+
+volumes:
+  postgres_data:  # Define the volume for PostgreSQL data

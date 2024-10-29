@@ -1,4 +1,4 @@
-# Start with a base image containing Java runtime
+
 FROM openjdk:23-jdk-oracle
 
 # Add Maintainer Info
@@ -14,7 +14,7 @@ EXPOSE 8010
 ARG JAR_FILE=target/gym_management-1.0.0.jar
 
 # Add the application's jar to the container
-ADD ${JAR_FILE} gym_management-1.0.0.jar
+ADD ${JAR_FILE} gym_management.jar
 
 # Run the jar file
 ENTRYPOINT ["java","-Djava.security.egmvn d=file:/dev/./urandom","-jar","/gym_management.jar"]
