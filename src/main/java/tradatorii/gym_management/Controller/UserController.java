@@ -29,4 +29,16 @@ public class UserController {
         this.userService.createUser(user);
         return user;
     }
+
+    @DeleteMapping
+    public ResponseEntity<Long> deleteUser(@RequestParam Long id)
+    {
+        return ResponseEntity.ok(this.userService.deleteUser(id));
+    }
+
+    @GetMapping
+    public List<User> getAllUsers()
+    {
+        return this.userService.getAllUsers();
+    }
 }
