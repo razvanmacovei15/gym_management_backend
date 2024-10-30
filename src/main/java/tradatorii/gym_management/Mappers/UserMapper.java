@@ -2,6 +2,7 @@ package tradatorii.gym_management.Mappers;
 
 import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.User;
+import tradatorii.gym_management.Enums.Role;
 
 public class UserMapper {
 
@@ -9,7 +10,8 @@ public class UserMapper {
     {
         String name = userDTO.getName();
         String email = userDTO.getEmail();
-        User user = new User(name,email);
+        Role role = Role.valueOf(userDTO.getRole());
+        User user = new User(name,email,role);
         return user;
     }
 }

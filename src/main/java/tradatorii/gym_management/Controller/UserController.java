@@ -30,9 +30,18 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Ramo te rog ia-mi un PopCola sa am la tine acasa cand mai vin!\n If Alex is reading, whats up brother? \n Lets see if this updates the docker while it is still running!");
+
+    @DeleteMapping
+    public ResponseEntity<Long> deleteUser(@RequestParam Long id)
+    {
+        return ResponseEntity.ok(this.userService.deleteUser(id));
+    }
+
+    @GetMapping
+    public List<User> getAllUsers()
+    {
+        return this.userService.getAllUsers();
+
     }
 }
 

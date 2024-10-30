@@ -1,7 +1,10 @@
 package tradatorii.gym_management.Entity;
 
 import jakarta.persistence.*;
+import tradatorii.gym_management.Enums.Role;
 
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -9,27 +12,40 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long userId;
 
-    @Column(name="name",nullable = false,unique = true)
+    @Column(name="name",nullable = false,unique = false)
     private String name;
 
     @Column(name="email",nullable=false,unique=true)
     private String email;
 
+    @Column(name="role",nullable=false,unique=false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
+    @ManyToMany(mappedBy = "usersResponsibleForTask")
+    private Set<Task> tasksResponsibleFor = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Task> tasksCreated=new HashSet<>();
+
+
     public User(){}
-    public User(String name,String email)
+    public User(String name,String email,Role role)
     {
         this.name=name;
         this.email=email;
+        this.role=role;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -46,5 +62,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

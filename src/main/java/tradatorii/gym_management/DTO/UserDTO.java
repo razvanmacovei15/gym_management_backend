@@ -1,20 +1,24 @@
 package tradatorii.gym_management.DTO;
 
+import tradatorii.gym_management.Enums.Role;
+
 import java.util.Objects;
 
 public class UserDTO {
     private Long id;
     private String name;
     private String email;
+    private String role;
 
     // Default constructor
     public UserDTO() {}
 
     // Parameterized constructor
-    public UserDTO(Long id, String name, String email) {
+    public UserDTO(Long id, String name, String email,String role) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.role=role;
     }
 
     // Getters and Setters
@@ -64,5 +68,9 @@ public class UserDTO {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, email);
+    }
+
+    public String getRole() {
+        return role;
     }
 }
