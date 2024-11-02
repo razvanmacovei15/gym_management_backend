@@ -72,8 +72,8 @@ jobs:
       uses: matheusvanzan/sshpass-action@v2
       with:
         host: ${{ secrets.SSH_HOST }}
-        user: ${{ secrets.SSH_USER }}
-        pass: ${{ secrets.SSH_PASS }}
+        user: ${{ secrets.SSH_USERNAME }}
+        pass: ${{ secrets.SSH_PASSWORD }}
         run: |
           docker pull razvanmc15/docker-ci-workflow:latest
           docker stop gym_app
