@@ -68,3 +68,16 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/docker-ci-workflow:latest
 
+    - name: Run sshpass commands
+      uses: matheusvanzan/sshpass-action@v2
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        user: ${{ secrets.SSH_USER }}
+        pass: ${{ secrets.SSH_PASS }}
+        run: |
+          docker pull razvanmc15/docker-ci-workflow:latest
+          docker stop gym_app
+          docker rm gym_app
+          docker run -d -p 8010:8010 --name gym_app razvanmc15/docker-ci-workflow:latest
+
+
