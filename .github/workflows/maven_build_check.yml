@@ -74,10 +74,6 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         user: ${{ secrets.SSH_USERNAME }}
         pass: ${{ secrets.SSH_PASSWORD }}
-        run: |
-          docker pull razvanmc15/docker-ci-workflow:latest
-          docker stop gym_app
-          docker rm gym_app
-          docker run -d -p 8010:8010 --name gym_app razvanmc15/docker-ci-workflow:latest
+        run: test2.bat
 
 
