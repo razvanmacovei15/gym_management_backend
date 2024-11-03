@@ -9,7 +9,8 @@ import java.util.List;
 
 
 @Service
-public class TaskService {
+public class TaskService implements TaskServiceInterface {
+
 
     private final TaskRepo taskRepo;
 
@@ -17,6 +18,11 @@ public class TaskService {
     @Autowired
     public TaskService(TaskRepo taskRepo) {
         this.taskRepo = taskRepo;
+    }
+
+    @Override
+    public Task save(Task task) {
+        return taskRepo.save(task);
     }
 
     public List<Task> getAllTasks() {
