@@ -2,6 +2,7 @@ package tradatorii.gym_management.DTO;
 
 import lombok.*;
 import tradatorii.gym_management.Enums.Category;
+import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Enums.Subcategory;
 
 @AllArgsConstructor
@@ -17,5 +18,6 @@ public class TaskDTO {
     private String deadline;
     private String priority;
     private Subcategory subcategory;
+    private Status status;
 
 }
