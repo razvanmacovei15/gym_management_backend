@@ -4,7 +4,9 @@ import tradatorii.gym_management.DTO.TaskDTO;
 import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.User;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class TaskWrapper {
@@ -38,6 +40,14 @@ public class TaskWrapper {
 
     public void setGymSet(Set<Gym> gymSet) {
         this.gymSet = gymSet;
+    }
+
+    public Map<String, Object> getAllComponents() {
+        Map<String, Object> components = new HashMap<>();
+        components.put("task", taskDTO);
+        components.put("usersResponsibleForTask", usersResponsibleForTask);
+        components.put("gymSet", gymSet);
+        return components;
     }
 }
 
