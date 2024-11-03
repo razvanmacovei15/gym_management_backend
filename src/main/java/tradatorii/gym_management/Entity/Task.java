@@ -2,12 +2,18 @@ package tradatorii.gym_management.Entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import tradatorii.gym_management.Enums.Category;
 import tradatorii.gym_management.Enums.Status;
-import tradatorii.gym_management.Enums.Subcatergory;
+import tradatorii.gym_management.Enums.Subcategory;
 
 import java.util.HashSet;
 import java.util.Set;
+
+@Builder
+@AllArgsConstructor
 
 @Entity
 @Table(name="Tasks")
@@ -55,7 +61,13 @@ public class Task {
 
     @Column(name="subcategory")
     @Enumerated(EnumType.STRING)
-    private Subcatergory subcategory;
+    private Subcategory subcategory;
+
+    @Column(name="createdAt",nullable=false,unique=false)
+    private String createdAt;
+
+    @Column(name="updatedAt",nullable=false,unique=false)
+    private String updatedAt;
 
 
     public Task(){}
@@ -132,11 +144,11 @@ public class Task {
         this.gymSet = gymSet;
     }
 
-    public Subcatergory getSubcategory() {
+    public Subcategory getSubcategory() {
         return subcategory;
     }
 
-    public void setSubcategory(Subcatergory subcategory) {
+    public void setSubcategory(Subcategory subcategory) {
         this.subcategory = subcategory;
     }
 }

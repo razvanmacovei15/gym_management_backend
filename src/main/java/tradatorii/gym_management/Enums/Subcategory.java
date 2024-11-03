@@ -1,6 +1,6 @@
 package tradatorii.gym_management.Enums;
 
-public enum Subcatergory {
+public enum Subcategory {
 
     BAIE,
     SPA,

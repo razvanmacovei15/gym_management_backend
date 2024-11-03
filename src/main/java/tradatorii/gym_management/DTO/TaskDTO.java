@@ -1,11 +1,14 @@
 package tradatorii.gym_management.DTO;
 
-import tradatorii.gym_management.Entity.User;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import tradatorii.gym_management.Enums.Category;
-import tradatorii.gym_management.Enums.Subcatergory;
+import tradatorii.gym_management.Enums.Subcategory;
 
-import java.util.HashSet;
-import java.util.Set;
+@Builder
+@Getter
+@Setter
 
 public class TaskDTO {
 
@@ -15,17 +18,15 @@ public class TaskDTO {
     private String deadline;
     private String priority;
 
-    private Set<User> usersResponsibleForTask=new HashSet<>();
-    private Subcatergory subcategory;
+    private Subcategory subcategory;
 
     public TaskDTO(){}
-    public TaskDTO(Long taskId, Category category, String description, String deadline, String priority, Set<User> usersResponsibleForTask, Subcatergory subcategory) {
+    public TaskDTO(Long taskId, Category category, String description, String deadline, String priority, Subcategory subcategory) {
         this.taskId = taskId;
         this.category = category;
         this.description = description;
         this.deadline = deadline;
         this.priority = priority;
-        this.usersResponsibleForTask = usersResponsibleForTask;
         this.subcategory = subcategory;
     }
 
@@ -69,19 +70,11 @@ public class TaskDTO {
         this.priority = priority;
     }
 
-    public Set<User> getUsersResponsibleForTask() {
-        return usersResponsibleForTask;
-    }
-
-    public void setUsersResponsibleForTask(Set<User> usersResponsibleForTask) {
-        this.usersResponsibleForTask = usersResponsibleForTask;
-    }
-
-    public Subcatergory getSubcategory() {
+    public Subcategory getSubcategory() {
         return subcategory;
     }
 
-    public void setSubcategory(Subcatergory subcategory) {
+    public void setSubcategory(Subcategory subcategory) {
         this.subcategory = subcategory;
     }
 }

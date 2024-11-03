@@ -1,10 +1,21 @@
 package tradatorii.gym_management.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import tradatorii.gym_management.Enums.Role;
 
 import java.util.HashSet;
 import java.util.Set;
+
+
+
+@Builder
+@Data
+@AllArgsConstructor
+
 
 
 @Entity
