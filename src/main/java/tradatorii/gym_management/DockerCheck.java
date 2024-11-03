@@ -6,5 +6,6 @@ public class DockerCheck {
         System.out.println("lets update the code just a little bit more: auto docker update!");
         System.out.println("lets update the code just a little bit more: auto docker update!");
         System.out.println("ups i did it again");
+        System.out.println("ups i did it again");
     }
 }
