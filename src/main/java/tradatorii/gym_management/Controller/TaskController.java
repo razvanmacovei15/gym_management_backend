@@ -58,7 +58,7 @@ public class TaskController {
         task.setGymSet(gymSet);
 
         Task savedTask = taskService.save(task);
-        System.out.println(taskDTO);
+        System.out.println(taskDTO + "<= adding this task worked");
         return ResponseEntity.ok(taskMapper.mapFrom(savedTask));
 
     }
