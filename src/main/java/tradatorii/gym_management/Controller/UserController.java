@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @PostMapping
+    @PostMapping("/create")
     public User createUser(@RequestBody UserDTO userDTO)
     {
         User user = userMapper.toEntity(userDTO);

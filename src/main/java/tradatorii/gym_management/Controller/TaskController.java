@@ -14,10 +14,12 @@ import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
+import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Mappers.TaskMapper;
 import tradatorii.gym_management.Service.TaskServiceInterface;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,9 @@ public class TaskController {
     {
         TaskDTO taskDTO = taskRequestDTO.getTaskDTO();
         Task task = taskMapper.toEntity(taskDTO);
+        task.setCreatedAt(LocalDateTime.now());
+        task.setUpdatedAt(LocalDateTime.now());
+        task.setStatus(Status.PENDING);
 
         Set<GymDTO> gyms = taskRequestDTO.getGyms();
         Set<UserDTO> users = taskRequestDTO.getUsers();

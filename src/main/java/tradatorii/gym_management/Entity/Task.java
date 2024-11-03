@@ -3,10 +3,13 @@ package tradatorii.gym_management.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import tradatorii.gym_management.Enums.Category;
 import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Enums.Subcategory;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,11 +65,11 @@ public class Task {
     @Column(name="subcategory")
     @Enumerated(EnumType.STRING)
     private Subcategory subcategory;
-
+    @CreationTimestamp
     @Column(name="createdAt",nullable=false,unique=false)
-    private String createdAt;
-
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
     @Column(name="updatedAt",nullable=false,unique=false)
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
 }

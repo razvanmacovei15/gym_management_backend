@@ -33,7 +33,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     @ManyToMany(mappedBy = "usersResponsibleForTask")
     private Set<Task> tasksResponsibleFor;
 
