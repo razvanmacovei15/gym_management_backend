@@ -1,7 +1,6 @@
 package tradatorii.gym_management.Service.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Repo.TaskRepo;
