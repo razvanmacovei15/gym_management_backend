@@ -8,9 +8,7 @@ import tradatorii.gym_management.Wrapper.TaskWrapper;
 import java.time.LocalDateTime;
 @Component
 public class TaskMapper {
-
-
-    public static Task toEntity(TaskWrapper taskWrp)
+    public Task toEntity(TaskWrapper taskWrp)
     {
         TaskDTO taskDTO= taskWrp.getTaskDTO();
         Task task= Task.builder()

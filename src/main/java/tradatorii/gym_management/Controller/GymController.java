@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Mappers.GymMapper;
-import tradatorii.gym_management.Service.GymService;
 import tradatorii.gym_management.Service.GymServiceInterface;
 
 @RestController

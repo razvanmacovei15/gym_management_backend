@@ -1,6 +1,7 @@
 package tradatorii.gym_management.Controller;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,15 +11,14 @@ import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Mappers.TaskMapper;
-import tradatorii.gym_management.Service.TaskService;
 import tradatorii.gym_management.Service.TaskServiceInterface;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
 
-import java.util.Map;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/tasks")
+@AllArgsConstructor
 public class TaskController {
 
     private TaskServiceInterface taskService;

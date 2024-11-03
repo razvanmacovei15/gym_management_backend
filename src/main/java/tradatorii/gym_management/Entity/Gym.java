@@ -17,7 +17,7 @@ public class Gym {
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    private int gymId;
+    private Long gymId;
 
     @Column(name="name",nullable=false,unique=true)
     private String name;

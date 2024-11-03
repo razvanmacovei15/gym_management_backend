@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GymDTO {
-    private int id;
+    private Long id;
     private String name;
     private String address;
 }
