@@ -24,11 +24,11 @@ jobs:
       uses: actions/checkout@v3
 
     # Set up JDK 23 (or another version if your project requires it)
-    - name: Set up JDK 23
+    - name: Set up JDK 21
       uses: actions/setup-java@v3
       with:
         distribution: 'oracle'
-        java-version: '23'
+        java-version: '21'
 
     # Cache Maven dependencies to improve build time
     - name: Cache Maven packages
@@ -74,6 +74,7 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         user: ${{ secrets.SSH_USERNAME }}
         pass: ${{ secrets.SSH_PASSWORD }}
+        port: ${{ secrets.SSH_PORT}}
         run: test2.bat
 
 

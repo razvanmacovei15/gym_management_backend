@@ -3,10 +3,7 @@ package tradatorii.gym_management.Controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.DTO.TaskDTO;
 import tradatorii.gym_management.DTO.TaskRequestDTO;
@@ -20,6 +17,7 @@ import tradatorii.gym_management.Service.TaskServiceInterface;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,6 +59,13 @@ public class TaskController {
         System.out.println(taskDTO + "<= adding this task worked");
         return ResponseEntity.ok(taskMapper.mapFrom(savedTask));
 
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<TaskDTO>> getAllTasks()
+    {
+        List<Task> tasks = taskService.getAllTasks();
+        return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
     }
 
 
