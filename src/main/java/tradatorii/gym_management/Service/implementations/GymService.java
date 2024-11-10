@@ -1,9 +1,10 @@
-package tradatorii.gym_management.Service;
+package tradatorii.gym_management.Service.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Repo.GymRepo;
+import tradatorii.gym_management.Service.GymServiceInterface;
 
 import java.util.List;
 

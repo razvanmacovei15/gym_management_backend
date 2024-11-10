@@ -1,24 +1,18 @@
-package tradatorii.gym_management.Service;
+package tradatorii.gym_management.Service.implementations;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Repo.TaskRepo;
+import tradatorii.gym_management.Service.TaskServiceInterface;
 
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @Service
 public class TaskService implements TaskServiceInterface {
 
-
     private final TaskRepo taskRepo;
-
-
-    @Autowired
-    public TaskService(TaskRepo taskRepo) {
-        this.taskRepo = taskRepo;
-    }
 
     @Override
     public Task save(Task task) {
