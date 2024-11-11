@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import tradatorii.gym_management.Enums.Category;
+import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Enums.Subcategory;
 
 @Builder
@@ -17,7 +18,7 @@ public class TaskDTO {
     private String description;
     private String deadline;
     private String priority;
-
+   // private Status status;
     private Subcategory subcategory;
 
     public TaskDTO(){}

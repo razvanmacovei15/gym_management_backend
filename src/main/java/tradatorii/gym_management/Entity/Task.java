@@ -63,10 +63,10 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Subcategory subcategory;
 
-    @Column(name="createdAt",nullable=false,unique=false)
+    @Column(name="createdAt",nullable=true,unique=false)
     private String createdAt;
 
-    @Column(name="updatedAt",nullable=false,unique=false)
+    @Column(name="updatedAt",nullable=true,unique=false)
     private String updatedAt;
 
 

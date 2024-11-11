@@ -24,12 +24,26 @@ public class TaskMapper {
         return task;
     }
 
-    public Task mapFrom(TaskDTO taskDTO){
+    public static Task mapFrom(TaskDTO taskDTO){
         return Task.builder()
                 .category(taskDTO.getCategory())
                 .description(taskDTO.getDescription())
+                .status(Status.PENDING)
                 .deadline(taskDTO.getDeadline())
                 .priority(taskDTO.getPriority())
                 .build();
+    }
+
+
+    public static TaskDTO mapTo(Task task){
+        TaskDTO taskDTO = TaskDTO.builder()
+                .taskId(task.getTaskId())
+                .category(task.getCategory())
+                .description(task.getDescription())
+                .deadline(task.getDeadline())
+                .priority(task.getPriority())
+                .build();
+       // taskDTO.setStatus(task.getStatus());
+        return taskDTO;
     }
 }

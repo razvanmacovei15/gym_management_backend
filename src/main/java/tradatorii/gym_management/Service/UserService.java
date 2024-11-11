@@ -1,9 +1,12 @@
 package tradatorii.gym_management.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Repo.UserRepo;
+import tradatorii.gym_management.Mappers.UserMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +19,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for (User user : users)
+        {
+            UserDTO userDTO = UserMapper.toDTO(user);
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
     }
 
     public Optional<User> getUserById(Long id) {

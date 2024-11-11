@@ -1,8 +1,17 @@
 package tradatorii.gym_management.DTO;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import tradatorii.gym_management.Enums.Role;
 
+import java.nio.file.FileStore;
 import java.util.Objects;
+
+
+@Builder
+@Getter
+@Setter
 
 public class UserDTO {
     private Long id;
@@ -15,7 +24,6 @@ public class UserDTO {
 
     // Parameterized constructor
     public UserDTO(Long id, String name, String email,String role) {
-        this.id = id;
         this.name = name;
         this.email = email;
         this.role=role;

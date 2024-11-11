@@ -23,11 +23,13 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody UserDTO userDTO)
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO)
     {
         User user = UserMapper.toEntity(userDTO);
-        this.userService.createUser(user);
-        return user;
+        User savedUser = userService.createUser(user);
+        UserDTO savedUserDto = UserMapper.toDTO(savedUser);
+//        userDTO.setId(user.getUserId());
+        return ResponseEntity.ok(savedUserDto);
     }
 
 
@@ -37,8 +39,8 @@ public class UserController {
         return ResponseEntity.ok(this.userService.deleteUser(id));
     }
 
-    @GetMapping
-    public List<User> getAllUsers()
+    @GetMapping("/all")
+    public List<UserDTO> getAllUsers()
     {
         return this.userService.getAllUsers();
 
