@@ -11,5 +11,5 @@ public interface TaskServiceInterface {
 
     Status updateStatus(Long id, Status status);
 
-    List<TaskDTO> getAllTasks();
+    List<Task> getAllTasks();
 }

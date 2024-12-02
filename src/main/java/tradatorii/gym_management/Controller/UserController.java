@@ -45,5 +45,10 @@ public class UserController {
         return this.userService.getAllUsers();
 
     }
+
+
+    //TODO: -implement the delete user method
+    //      -implement the update user method
+
 }
 

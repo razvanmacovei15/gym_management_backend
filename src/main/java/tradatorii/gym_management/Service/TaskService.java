@@ -29,15 +29,8 @@ public class TaskService implements TaskServiceInterface {
         return taskRepo.save(task);
     }
 
-    public List<TaskDTO> getAllTasks() {
-        List<Task> tasks = taskRepo.findAll();
-        List<TaskDTO> taskDTOS = new ArrayList<>();
-        for(Task task: tasks){
-            TaskDTO taskDTO = TaskMapper.mapTo(task);
-            taskDTOS.add(taskDTO);
-        }
-
-        return taskDTOS;
+    public List<Task> getAllTasks() {
+            return taskRepo.findAll();
     }
 
     public Task createTask(Task task) {

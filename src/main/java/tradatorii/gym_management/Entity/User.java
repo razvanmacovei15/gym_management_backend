@@ -21,6 +21,9 @@ import java.util.Set;
 @Entity
 @Table(name="Users")
 public class User {
+
+    //TODO: ADD PASSWORD
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long userId;

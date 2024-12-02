@@ -2,19 +2,20 @@ package tradatorii.gym_management.Entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import tradatorii.gym_management.Enums.Category;
 import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Enums.Subcategory;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Builder
 @AllArgsConstructor
-
+@NoArgsConstructor
+@Setter
+@Getter
 @Entity
 @Table(name="Tasks")
 public class Task {
@@ -64,91 +65,28 @@ public class Task {
     private Subcategory subcategory;
 
     @Column(name="createdAt",nullable=true,unique=false)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name="updatedAt",nullable=true,unique=false)
-    private String updatedAt;
-
-
-    public Task(){}
-
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(String deadline) {
-        this.deadline = deadline;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
+    private LocalDateTime updatedAt;
 
     public void setPriority(String priority) {
         this.priority = priority;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Set<User> getUsersResponsibleForTask() {
-        return usersResponsibleForTask;
-    }
 
     public void setUsersResponsibleForTask(Set<User> usersResponsibleForTask) {
         this.usersResponsibleForTask = usersResponsibleForTask;
-    }
-
-    public Set<Gym> getGymSet() {
-        return gymSet;
     }
 
     public void setGymSet(Set<Gym> gymSet) {
         this.gymSet = gymSet;
     }
 
-    public Subcategory getSubcategory() {
-        return subcategory;
-    }
 
-    public void setSubcategory(Subcategory subcategory) {
-        this.subcategory = subcategory;
-    }
 }
