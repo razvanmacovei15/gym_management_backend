@@ -29,6 +29,9 @@ public class User {
     @Column(name="email",nullable=false,unique=true)
     private String email;
 
+    @Column(name="password",nullable=false,unique=false)
+    private String password;
+
     @Column(name="role",nullable=false,unique=false)
     @Enumerated(EnumType.STRING)
     private Role role;

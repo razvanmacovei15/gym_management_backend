@@ -6,6 +6,11 @@ import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 public class TaskMapper {
     public Task toEntity(TaskDTO taskDTO){
@@ -29,5 +34,10 @@ public class TaskMapper {
                 .subcategory(task.getSubcategory())
                 .status(task.getStatus())
                 .build();
+    }
+
+    public List<TaskDTO> taskDTOList(Set<Task> tasks){
+        List<TaskDTO> taskList = tasks.stream().map(this::mapFrom).collect(Collectors.toList());
+        return taskList;
     }
 }
