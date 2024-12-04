@@ -65,9 +65,11 @@ public class Task {
     @Column(name="subcategory")
     @Enumerated(EnumType.STRING)
     private Subcategory subcategory;
+
     @CreationTimestamp
     @Column(name="createdAt",nullable=false,unique=false)
     private LocalDateTime createdAt;
+
     @UpdateTimestamp
     @Column(name="updatedAt",nullable=false,unique=false)
     private LocalDateTime updatedAt;

@@ -16,7 +16,7 @@ public class UserMapper {
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .password(userDTO.getPassword())
-                .role(Role.valueOf(userDTO.getRole()))
+                .role(userDTO.getRole())
                 .build();
     }
 
@@ -27,7 +27,7 @@ public class UserMapper {
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .role(user.getRole().name())
+                .role(user.getRole())
                 .build();
     }
     public List<UserDTO> toDTOList(List<User> users)

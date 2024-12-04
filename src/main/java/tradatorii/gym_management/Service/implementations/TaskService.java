@@ -48,7 +48,6 @@ public class TaskService implements TaskServiceInterface {
                     t.setDeadline(task.getDeadline());
                     t.setPriority(task.getPriority());
                     t.setStatus(task.getStatus());
-                    t.setUpdatedAt(LocalDateTime.now());
                     t.setUsersResponsibleForTask(task.getUsersResponsibleForTask());
                     t.setGymSet(task.getGymSet());
                     t.setSubcategory(task.getSubcategory());

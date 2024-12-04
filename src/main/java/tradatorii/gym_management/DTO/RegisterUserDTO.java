@@ -1,19 +1,22 @@
 package tradatorii.gym_management.DTO;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import tradatorii.gym_management.Enums.Role;
 
-import java.util.Objects;
-@AllArgsConstructor
 @Builder
-@Getter
 @Setter
-@EqualsAndHashCode
-public class UserDTO {
-    private Long id;
+@Getter
+@AllArgsConstructor
+
+public class RegisterUserDTO {
     private String name;
     private String email;
     private String password;
     private Role role;
+
 
 }
