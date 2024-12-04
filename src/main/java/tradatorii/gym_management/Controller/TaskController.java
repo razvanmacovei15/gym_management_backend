@@ -34,8 +34,7 @@ public class TaskController {
     {
         TaskDTO taskDTO = taskRequestDTO.getTaskDTO();
         Task task = taskMapper.toEntity(taskDTO);
-        task.setCreatedAt(LocalDateTime.now());
-        task.setUpdatedAt(LocalDateTime.now());
+
         task.setStatus(Status.PENDING);
 
         Set<GymDTO> gyms = taskRequestDTO.getGyms();
@@ -46,16 +45,20 @@ public class TaskController {
                 .name(gymDTO.getName())
                 .address(gymDTO.getAddress())
                 .build()).collect(Collectors.toSet());
+
         Set<User> usersSet = users.stream().map(userDTO -> User.builder()
                 .userId(userDTO.getId())
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
+                .role(userDTO.getRole())
                 .build()).collect(Collectors.toSet());
 
         task.setUsersResponsibleForTask(usersSet);
+
         task.setGymSet(gymSet);
 
         Task savedTask = taskService.save(task);
+
         System.out.println(taskDTO + "<= adding this task worked");
         return ResponseEntity.ok(taskMapper.mapFrom(savedTask));
 
