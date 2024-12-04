@@ -19,7 +19,7 @@ public class GymController {
 
     private final GymMapper gymMapper;
 
-    @PostMapping("/createGym")
+    @PostMapping("/create")
     public ResponseEntity<GymDTO> saveGym(@RequestBody GymDTO gymDTO) {
         Gym gym = gymMapper.fromDTO(gymDTO);
         Gym savedGym = gymService.save(gym);

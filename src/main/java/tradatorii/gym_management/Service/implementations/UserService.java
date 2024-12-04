@@ -2,12 +2,15 @@ package tradatorii.gym_management.Service.implementations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.UserServiceInterface;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @RequiredArgsConstructor
 @Service
 public class UserService implements UserServiceInterface {
@@ -30,6 +33,8 @@ public class UserService implements UserServiceInterface {
                 .map(user -> {
                     user.setName(updatedUser.getName());
                     user.setEmail(updatedUser.getEmail());
+                    user.setPassword(updatedUser.getPassword());
+                    user.setRole(updatedUser.getRole());
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found with id " + id));
@@ -39,6 +44,20 @@ public class UserService implements UserServiceInterface {
         userRepository.deleteById(id);
         return id;
     }
+
+    @Override
+    public Set<Task> getCreatedTasks(Long userId) {
+        if(userRepository.findById(userId).isPresent())
+        {
+            return userRepository.findById(userId).get().getTasksCreated();
+        }
+        else
+        {
+            throw new RuntimeException("User not found with id " + userId);
+        }
+
+    }
+
 }
 
 

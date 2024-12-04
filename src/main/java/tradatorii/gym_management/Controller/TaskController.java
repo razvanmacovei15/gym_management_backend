@@ -69,4 +69,21 @@ public class TaskController {
     }
 
 
+    @PatchMapping("/updateStatus")
+    public ResponseEntity<Status> updateStatus(@RequestParam Long id, @RequestParam Status status)
+    {
+        return ResponseEntity.ok(taskService.updateStatus(id, status));
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<TaskDTO> updateTask(@RequestParam Long taskId, @RequestBody TaskDTO taskDTO)
+    {
+        Task task = taskMapper.toEntity(taskDTO);
+        Task updatedTask = taskService.updateTask(taskId, task);
+        TaskDTO updatedTaskDTO = taskMapper.mapFrom(updatedTask);
+        return ResponseEntity.ok(updatedTaskDTO);
+
+    }
+
+
 }
