@@ -1,9 +1,7 @@
 package tradatorii.gym_management.Controller;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tradatorii.gym_management.Enums.Category;
 import tradatorii.gym_management.Enums.Role;
 import tradatorii.gym_management.Enums.Status;
@@ -11,6 +9,11 @@ import tradatorii.gym_management.Enums.Subcategory;
 
 @RestController
 @RequestMapping("api/enum")
+@CrossOrigin(origins = "http://localhost:3000", // Replace with your frontend's URL
+        allowedHeaders = {"Authorization", "Content-Type"},
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowCredentials = "true")
+
 public class EnumController {
 
     @GetMapping("/roles")

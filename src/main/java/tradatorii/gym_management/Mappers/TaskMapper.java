@@ -1,7 +1,12 @@
 package tradatorii.gym_management.Mappers;
 import org.springframework.stereotype.Component;
+import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.DTO.TaskDTO;
+import tradatorii.gym_management.DTO.TaskRequestDTO;
+import tradatorii.gym_management.DTO.UserDTO;
+import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.Task;
+import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
 
@@ -13,6 +18,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class TaskMapper {
+
+    UserMapper userMapper = new UserMapper();
+    GymMapper gymMapper = new GymMapper();
     public Task toEntity(TaskDTO taskDTO){
         return Task.builder()
                 .category(taskDTO.getCategory())
@@ -33,9 +41,36 @@ public class TaskMapper {
                 .priority(task.getPriority())
                 .subcategory(task.getSubcategory())
                 .status(task.getStatus())
+
                 .build();
     }
 
+
+    public TaskRequestDTO mapToRequest(Task task)
+
+    {
+        TaskDTO taskDTO = mapFrom(task);
+        TaskRequestDTO taskRequestDTO = new TaskRequestDTO();
+        taskRequestDTO.setTaskDTO(taskDTO);
+        Set<User> users = task.getUsersResponsibleForTask();
+        Set<Gym> gyms = task.getGymSet();
+        for(User user : users)
+            System.out.println(user.getName());
+
+        List<User> userList = new ArrayList<>(users);
+        List<Gym> gymList = new ArrayList<>(gyms);
+        for(User user : userList)
+            System.out.println(user.getName());
+
+        List<UserDTO> userDTOList = userMapper.toDTOList(userList);
+        List<GymDTO> gymDTOList = gymMapper.toDTOList(gymList);
+
+        taskRequestDTO.setUsers(userDTOList.stream().collect(Collectors.toSet()));
+        taskRequestDTO.setGyms(gymDTOList.stream().collect(Collectors.toSet()));
+
+
+        return taskRequestDTO;
+    }
     public List<TaskDTO> taskDTOList(Set<Task> tasks){
         List<TaskDTO> taskList = tasks.stream().map(this::mapFrom).collect(Collectors.toList());
         return taskList;
