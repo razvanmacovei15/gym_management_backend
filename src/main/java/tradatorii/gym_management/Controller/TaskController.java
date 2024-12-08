@@ -24,6 +24,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/tasks")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000", // Replace with your frontend's URL
+        allowedHeaders = {"Authorization", "Content-Type"},
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowCredentials = "true")
+
 public class TaskController {
 
     private TaskServiceInterface taskService;
@@ -65,10 +70,10 @@ public class TaskController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<TaskDTO>> getAllTasks()
+    public ResponseEntity<List<TaskRequestDTO>> getAllTasks()
     {
         List<Task> tasks = taskService.getAllTasks();
-        return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
+        return ResponseEntity.ok(tasks.stream().map(taskMapper::mapToRequest).collect(Collectors.toList()));
     }
 
 
