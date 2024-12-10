@@ -24,6 +24,7 @@ public class GymController {
         Gym gym = gymMapper.fromDTO(gymDTO);
         Gym savedGym = gymService.save(gym);
         GymDTO savedGymDTO = gymMapper.toDTO(savedGym);
+        System.out.println(savedGymDTO);
         return ResponseEntity.ok(savedGymDTO);
     }
 
