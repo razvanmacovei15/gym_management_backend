@@ -39,6 +39,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // Disables CSRF (Cross-Site Request Forgery) protection, typically disabled for REST APIs
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configures access rules for different request patterns
@@ -67,10 +68,10 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         // Creates a new CorsConfiguration instance to set allowed origins, methods, and headers
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8005")); // Specifies allowed origins (domains) for CORS requests
-        configuration.setAllowedMethods(List.of("GET", "POST")); // Specifies allowed HTTP methods
+        configuration.setAllowedOrigins(List.of("http://localhost:8020/")); // Specifies allowed origins (domains) for CORS requests
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // Specifies allowed HTTP methods
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specifies allowed HTTP headers in requests
-
+        configuration.setAllowCredentials(true); // Enables credentials (e.g., cookies) for CORS requests
         // Registers the CORS configuration for all paths in the application
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
