@@ -45,6 +45,13 @@ public class UserController {
         return userMapper.toDTOList(users);
     }
 
+    @GetMapping("/managers")
+    public List<UserDTO> getAllManagers()
+    {
+        List<User> managers = this.userService.getAllManagers();
+        return userMapper.toDTOList(managers);
+    }
+
 
     @PatchMapping("/update")
     public ResponseEntity<UserDTO> updateUser(@RequestParam Long userId, @RequestBody UserDTO userDTO)
