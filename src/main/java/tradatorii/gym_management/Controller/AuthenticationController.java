@@ -1,25 +1,29 @@
 package tradatorii.gym_management.Controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tradatorii.gym_management.DTO.LoginDTO;
 import tradatorii.gym_management.DTO.RegisterUserDTO;
 import tradatorii.gym_management.Entity.User;
+import tradatorii.gym_management.Mappers.UserMapper;
 import tradatorii.gym_management.security.LoginResponse;
 import tradatorii.gym_management.security.services.AuthenticationService;
 import tradatorii.gym_management.security.services.JwtService;
 @RequestMapping("/auth")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", // Replace with your frontend's URL
+        allowedHeaders = {"Authorization", "Content-Type"},
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+        allowCredentials = "true")
 public class AuthenticationController {
+    private final UserMapper userMapper;
 
     private final JwtService jwtService;
 
     private final AuthenticationService authenticationService;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
+    public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService) {
+        this.userMapper = userMapper;
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }
@@ -40,7 +44,10 @@ public class AuthenticationController {
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
+                .user(userMapper.toDTO(authenticatedUser))
                 .build();
+
+        System.out.println(loginResponse.getUser().getRole());
 
         return ResponseEntity.ok(loginResponse);
     }
