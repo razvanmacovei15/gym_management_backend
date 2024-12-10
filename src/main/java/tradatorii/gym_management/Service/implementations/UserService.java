@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
+import tradatorii.gym_management.Enums.Role;
 import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.UserServiceInterface;
 
@@ -18,6 +19,10 @@ public class UserService implements UserServiceInterface {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public List<User> getAllManagers() {
+        return userRepository.findAllByRole(Role.MANAGER);
     }
     @Override
     public Optional<User> getById(Long id) {
