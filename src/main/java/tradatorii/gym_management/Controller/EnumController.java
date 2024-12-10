@@ -9,7 +9,7 @@ import tradatorii.gym_management.Enums.Subcategory;
 
 @RestController
 @RequestMapping("api/enum")
-@CrossOrigin(origins = "http://localhost:3000", // Replace with your frontend's URL
+@CrossOrigin(origins = "http://localhost:8020", // Replace with your frontend's URL
         allowedHeaders = {"Authorization", "Content-Type"},
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
         allowCredentials = "true")

@@ -24,10 +24,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/tasks")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000", // Replace with your frontend's URL
+@CrossOrigin(
+        origins = "http://localhost:8020", // Frontend URL
         allowedHeaders = {"Authorization", "Content-Type"},
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
-        allowCredentials = "true")
+        allowCredentials = "true"
+)
+
 
 public class TaskController {
 
