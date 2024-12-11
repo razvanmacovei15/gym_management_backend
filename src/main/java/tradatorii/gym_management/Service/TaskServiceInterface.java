@@ -1,5 +1,6 @@
 package tradatorii.gym_management.Service;
 
+import tradatorii.gym_management.DTO.TaskRequestDTO;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Enums.Status;
 
@@ -14,5 +15,6 @@ public interface TaskServiceInterface {
     Status updateStatus(Long id, Status status);
 
     Task updateTask(Long id, Task task);
+    Task createNewTask(TaskRequestDTO taskDTO);
 
 }

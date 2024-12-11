@@ -1,5 +1,6 @@
 package tradatorii.gym_management.Service;
 
+import tradatorii.gym_management.DTO.TaskRequestDTO;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 

@@ -2,18 +2,31 @@ package tradatorii.gym_management.Service.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tradatorii.gym_management.DTO.GymDTO;
+import tradatorii.gym_management.DTO.TaskRequestDTO;
+import tradatorii.gym_management.DTO.UserDTO;
+import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.Task;
+import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Status;
+import tradatorii.gym_management.Repo.GymRepo;
 import tradatorii.gym_management.Repo.TaskRepo;
+import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.TaskServiceInterface;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class TaskService implements TaskServiceInterface {
 
     private final TaskRepo taskRepo;
+    private final UserRepo userRepo;
+    private final GymRepo gymRepo;
 
     @Override
     public Task save(Task task) {
@@ -56,6 +69,36 @@ public class TaskService implements TaskServiceInterface {
                 .orElseThrow(() -> new RuntimeException("Task not found with id " + id));
     }
 
+    @Override
+    public Task createNewTask(TaskRequestDTO taskDTO) {
+        // Map TaskDTO to Task Entity
+        Task task = Task.builder()
+                .category(taskDTO.getTaskDTO().getCategory())
+                .description(taskDTO.getTaskDTO().getDescription())
+                .deadline(taskDTO.getTaskDTO().getDeadline())
+                .priority(taskDTO.getTaskDTO().getPriority())
+                .subcategory(taskDTO.getTaskDTO().getSubcategory())
+                .status(tradatorii.gym_management.Enums.Status.PENDING) // Default status
+                .build();
 
+        // Fetch Users and Set to Task
+        Set<User> users = new HashSet<>();
+        for (UserDTO userDTO : taskDTO.getUsers()) {
+            Optional<User> user = userRepo.findById(userDTO.getId());
+            user.ifPresent(users::add);
+        }
+        task.setUsersResponsibleForTask(users);
+
+        // Fetch Gyms and Set to Task
+        Set<Gym> gyms = new HashSet<>();
+        for (GymDTO gymDTO : taskDTO.getGyms()) {
+            Optional<Gym> gym = gymRepo.findById(gymDTO.getId());
+            gym.ifPresent(gyms::add);
+        }
+        task.setGymSet(gyms);
+
+        // Save and return the task
+        return taskRepo.save(task);
+    }
 
 }

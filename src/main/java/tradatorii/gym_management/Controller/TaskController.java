@@ -40,35 +40,9 @@ public class TaskController {
     @PostMapping("/create")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskRequestDTO taskRequestDTO)
     {
-        TaskDTO taskDTO = taskRequestDTO.getTaskDTO();
-        Task task = taskMapper.toEntity(taskDTO);
-
-        task.setStatus(Status.PENDING);
-
-        Set<GymDTO> gyms = taskRequestDTO.getGyms();
-        Set<UserDTO> users = taskRequestDTO.getUsers();
-
-        Set<Gym> gymSet = gyms.stream().map(gymDTO -> Gym.builder()
-                .gymId(gymDTO.getId())
-                .name(gymDTO.getName())
-                .address(gymDTO.getAddress())
-                .build()).collect(Collectors.toSet());
-
-        Set<User> usersSet = users.stream().map(userDTO -> User.builder()
-                .userId(userDTO.getId())
-                .name(userDTO.getName())
-                .email(userDTO.getEmail())
-                .role(userDTO.getRole())
-                .build()).collect(Collectors.toSet());
-
-        task.setUsersResponsibleForTask(usersSet);
-
-        task.setGymSet(gymSet);
-
-        Task savedTask = taskService.save(task);
-
-        System.out.println(taskDTO + "<= adding this task worked");
-        return ResponseEntity.ok(taskMapper.mapFrom(savedTask));
+        Task task = taskService.createNewTask(taskRequestDTO);
+        TaskDTO taskDTO = taskMapper.mapFrom(task);
+        return ResponseEntity.ok(taskDTO);
 
     }
 
