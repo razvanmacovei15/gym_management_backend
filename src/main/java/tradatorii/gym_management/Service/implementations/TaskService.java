@@ -28,12 +28,15 @@ public class TaskService implements TaskServiceInterface {
     private final UserRepo userRepo;
     private final GymRepo gymRepo;
 
+
+
     @Override
     public Task save(Task task) {
         return taskRepo.save(task);
     }
 
     public List<Task> getAllTasks() {
+        System.out.println("Getting all tasks");
         return taskRepo.findAll();
     }
 
