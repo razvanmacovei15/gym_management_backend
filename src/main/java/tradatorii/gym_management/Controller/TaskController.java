@@ -66,6 +66,7 @@ public class TaskController {
         Task task = taskMapper.toEntity(taskDTO);
         Task updatedTask = taskService.updateTask(taskId, task);
         TaskDTO updatedTaskDTO = taskMapper.mapFrom(updatedTask);
+        System.out.println(updatedTaskDTO);
         return ResponseEntity.ok(updatedTaskDTO);
 
     }
