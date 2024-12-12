@@ -33,6 +33,19 @@ public class TaskMapper {
 
 
     public TaskDTO mapFrom(Task task){
+        Set<Gym> gyms = task.getGymSet();
+        Set<User> users = task.getUsersResponsibleForTask();
+
+        List<Gym> gymList = new ArrayList<>(gyms);
+        List<GymDTO> gymDTOList = new ArrayList<>();
+        for(Gym gym : gymList)
+            gymDTOList.add(gymMapper.toDTO(gym));
+
+        List<User> userList = new ArrayList<>(users);
+        List<UserDTO> userDTOList = new ArrayList<>();
+        for(User user : userList)
+            userDTOList.add(userMapper.toDTO(user));
+
         return TaskDTO.builder()
                 .taskId(task.getTaskId())
                 .category(task.getCategory())
@@ -41,7 +54,8 @@ public class TaskMapper {
                 .priority(task.getPriority())
                 .subcategory(task.getSubcategory())
                 .status(task.getStatus())
-
+                .gyms(gymDTOList)
+                .users(userDTOList)
                 .build();
     }
 
