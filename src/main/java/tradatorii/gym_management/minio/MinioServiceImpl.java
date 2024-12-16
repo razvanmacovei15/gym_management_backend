@@ -2,9 +2,14 @@ package tradatorii.gym_management.minio;
 
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 @Component
@@ -25,9 +30,17 @@ public class MinioServiceImpl implements MinioService {
         return null;
     }
 
-    @Override
-    public void uploadFile(String bucketName, String objectName, String filePath) {
-
+    public void uploadFile(String bucketName, String objectName, MultipartFile file) throws Exception {
+        try (InputStream inputStream = file.getInputStream()) {
+            minioClient.putObject(
+                    PutObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(objectName)
+                            .stream(inputStream, file.getSize(), -1)
+                            .contentType(file.getContentType())
+                            .build()
+            );
+        }
     }
 
     @Override
