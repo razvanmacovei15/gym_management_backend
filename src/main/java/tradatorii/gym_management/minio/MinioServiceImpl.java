@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -34,6 +35,15 @@ public class MinioServiceImpl implements MinioService {
         try (InputStream inputStream = file.getInputStream()) {
             String fileType = file.getContentType();
             System.out.println(fileType + "<-- file type");
+
+            //extract extension from filetype
+            assert fileType != null;
+            String[] fileTypeParts = fileType.split("/");
+            System.out.println(Arrays.toString(fileTypeParts) + "<-- file extension");
+
+            String filenameWithExtension = objectName + "." + fileTypeParts[1];
+            System.out.println(filenameWithExtension + "<-- filename with extension");
+
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)

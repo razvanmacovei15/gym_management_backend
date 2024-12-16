@@ -34,6 +34,36 @@ public class EnumController {
 
     @GetMapping("/roles")
     public Role[] getRoles() {
+//        try {
+//            // Specify the file path
+//            String filePath = "src/main/resources/React-App-Development-Update.pptx";
+//            File file = new File(filePath);
+//
+//            // Create a FileInputStream for the file
+//            InputStream inputStream = new FileInputStream(file);
+//
+//            // Get the size of the file
+//            long objectSize = file.length();
+//
+//            // Define the part size for multipart uploads (e.g., 5MB)
+//            long partSize = 5 * 1024 * 1024;
+//
+//            // Upload the object to the bucket
+//            minioClient.putObject(
+//                    PutObjectArgs.builder()
+//                            .bucket("test1")
+//                            .object("point.pptx")
+//                            .stream(inputStream, objectSize, partSize)
+//                            .contentType("application/pptx") // Set the content type if known
+//                            .build()
+//            );
+//
+//            // Close the InputStream after the upload is complete
+//            inputStream.close();
+//        } catch (Exception e) {
+//            System.out.println("An error occurred during the upload process");
+//            System.out.println(e.getMessage());
+//        }
         minioService.createBucket("test5");
 
         return Role.values();
