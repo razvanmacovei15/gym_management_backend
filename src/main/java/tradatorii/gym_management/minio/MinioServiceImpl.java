@@ -47,7 +47,7 @@ public class MinioServiceImpl implements MinioService {
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
-                            .object(objectName)
+                            .object(filenameWithExtension)
                             .stream(inputStream, file.getSize(), -1)
                             .contentType(file.getContentType())
                             .build()
