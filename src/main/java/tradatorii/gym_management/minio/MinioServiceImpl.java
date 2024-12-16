@@ -32,6 +32,8 @@ public class MinioServiceImpl implements MinioService {
 
     public void uploadFile(String bucketName, String objectName, MultipartFile file) throws Exception {
         try (InputStream inputStream = file.getInputStream()) {
+            String fileType = file.getContentType();
+            System.out.println(fileType + "<-- file type");
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)

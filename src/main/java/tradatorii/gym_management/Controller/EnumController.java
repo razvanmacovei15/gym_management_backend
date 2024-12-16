@@ -34,7 +34,6 @@ public class EnumController {
 
     @GetMapping("/roles")
     public Role[] getRoles() {
-//
         minioService.createBucket("test5");
 
         return Role.values();
