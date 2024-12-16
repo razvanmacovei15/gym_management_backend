@@ -1,5 +1,6 @@
 package tradatorii.gym_management.Mappers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.Entity.Gym;
@@ -8,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class GymMapper {
+    private final UserMapper userMapper;
     public  GymDTO toDTO(Gym gym){
         return GymDTO.builder()
                 .id(gym.getGymId())
@@ -26,12 +29,12 @@ public class GymMapper {
     }
 
     public List<GymDTO> toDTOList(List<Gym> gyms){
-        List<GymDTO> gymDTOS = new ArrayList<>();
+        List<GymDTO> gymDTOs = new ArrayList<>();
         for (Gym gym : gyms)
         {
             GymDTO gymDTO = toDTO(gym);
-            gymDTOS.add(gymDTO);
+            gymDTOs.add(gymDTO);
         }
-        return gymDTOS;
+        return gymDTOs;
     }
 }

@@ -29,5 +29,4 @@ public class Gym {
     @ManyToMany(mappedBy = "gymSet")
     private Set<Task> taskSet=new HashSet<>();
 
-
 }

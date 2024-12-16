@@ -81,7 +81,7 @@ public class TaskService implements TaskServiceInterface {
                 .deadline(taskDTO.getTaskDTO().getDeadline())
                 .priority(taskDTO.getTaskDTO().getPriority())
                 .subcategory(taskDTO.getTaskDTO().getSubcategory())
-                .status(tradatorii.gym_management.Enums.Status.PENDING) // Default status
+                .status(Status.TO_DO) // Default status
                 .build();
 
         // Fetch Users and Set to Task

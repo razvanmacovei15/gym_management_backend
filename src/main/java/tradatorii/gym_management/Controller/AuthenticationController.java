@@ -1,6 +1,8 @@
 package tradatorii.gym_management.Controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import tradatorii.gym_management.DTO.LoginDTO;
 import tradatorii.gym_management.DTO.RegisterUserDTO;
@@ -51,4 +53,32 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(loginResponse);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<LoginResponse> verifyToken(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @AuthenticationPrincipal User user) {
+        // Extract token from "Bearer <token>" format
+        String token = authorizationHeader.startsWith("Bearer ")
+                ? authorizationHeader.substring(7)
+                : authorizationHeader;
+
+        // Check if the token is valid for the current user
+        boolean isTokenValid = jwtService.isTokenValid(token, user);
+        System.out.println(isTokenValid + " <--- is token valid");
+
+        if (!isTokenValid) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        // Construct the response
+        LoginResponse loginResponse = LoginResponse.builder()
+                .token(token)
+                .expiresIn(jwtService.getExpirationTime()) // Assuming you have this method
+                .user(userMapper.toDTO(user))
+                .build();
+
+        return ResponseEntity.ok(loginResponse);
+    }
+
 }

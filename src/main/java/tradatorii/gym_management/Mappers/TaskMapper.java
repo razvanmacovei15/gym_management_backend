@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class TaskMapper {
 
     UserMapper userMapper = new UserMapper();
-    GymMapper gymMapper = new GymMapper();
+    GymMapper gymMapper = new GymMapper(userMapper);
     public Task toEntity(TaskDTO taskDTO){
         return Task.builder()
                 .category(taskDTO.getCategory())
