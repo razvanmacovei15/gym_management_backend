@@ -86,7 +86,7 @@ public class AuthenticationController {
         String pUrl = null;
         if(user.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
             try {
-                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto");
+                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
