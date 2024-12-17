@@ -1,6 +1,7 @@
 package tradatorii.gym_management.Service.implementations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Role;
@@ -76,6 +77,11 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
+    public String changeProfilePicture(String objectName) {
+        return null;
+    }
+
+    @Override
     public User createManager(User user) {
         return User.builder()
                 .name(user.getName())
@@ -84,6 +90,26 @@ public class UserService implements UserServiceInterface {
                 .build();
     }
 
+    @Override
+    public String generateProfilePhotoName(User user) {
+        return user.getName() + user.getUserId() + "-profilePhoto";
+    }
+
+    @Override
+    public User updateUserInformation(Long id, UserDTO updateDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
+
+        if (updateDTO.getName() != null) {
+            existingUser.setName(updateDTO.getName());
+        }
+
+        if (updateDTO.getEmail() != null) {
+            existingUser.setEmail(updateDTO.getEmail());
+        }
+
+        return userRepository.save(existingUser);
+    }
 }
 
 

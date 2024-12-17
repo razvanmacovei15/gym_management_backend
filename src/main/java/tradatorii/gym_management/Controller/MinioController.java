@@ -2,8 +2,11 @@ package tradatorii.gym_management.Controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tradatorii.gym_management.Entity.User;
+import tradatorii.gym_management.Service.implementations.UserService;
 import tradatorii.gym_management.minio.MinioService;
 
 @RequestMapping("/minio")
@@ -16,6 +19,7 @@ import tradatorii.gym_management.minio.MinioService;
 public class MinioController {
 
     private final MinioService minioService;
+    private final UserService userService;
 
     @PostMapping("/createBucket")
     public void createBucket(@RequestParam String bucketName) {
@@ -24,10 +28,12 @@ public class MinioController {
 
     @PostMapping("/uploadFile")
     public ResponseEntity<String> uploadFile(
-            @RequestParam("bucketName") String bucketName,
-            @RequestParam("objectName") String objectName,
-            @RequestParam("file") MultipartFile file) {
+//            @RequestParam("bucketName") String bucketName,
+//            @RequestParam("objectName") String objectName,
+            @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) {
         try {
+            String bucketName = user.getUserBucket();
+            String objectName = userService.generateProfilePhotoName(user);
             minioService.uploadFile(bucketName, objectName, file);
             return ResponseEntity.ok("File uploaded successfully.");
         } catch (Exception e) {
