@@ -58,10 +58,10 @@ public class AuthenticationController {
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
-                .user(userMapper.toDTO(authenticatedUser))
+                .userId(authenticatedUser.getUserId())
                 .build();
 
-        System.out.println(loginResponse.getUser().getRole());
+        System.out.println(authenticatedUser.getRole());
 
         return ResponseEntity.ok(loginResponse);
     }
@@ -91,7 +91,6 @@ public class AuthenticationController {
                 throw new RuntimeException(e);
             }
         }
-
 
         // Construct the response
         LoginResponse loginResponse = LoginResponse.builder()
