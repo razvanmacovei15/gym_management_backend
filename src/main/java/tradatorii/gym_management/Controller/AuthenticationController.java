@@ -58,7 +58,7 @@ public class AuthenticationController {
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
-                .userId(authenticatedUser.getUserId())
+                .user(userMapper.toDTO(authenticatedUser))
                 .build();
 
         System.out.println(authenticatedUser.getRole());
@@ -96,7 +96,7 @@ public class AuthenticationController {
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(token)
                 .expiresIn(jwtService.getExpirationTime()) // Assuming you have this method
-                .userId(user.getUserId())
+                .user(userMapper.toDTO(user))
                 .preSignedPhotoUrl(pUrl)
                 .build();
 

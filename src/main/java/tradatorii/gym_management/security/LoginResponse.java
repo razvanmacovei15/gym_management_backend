@@ -11,6 +11,6 @@ import tradatorii.gym_management.DTO.UserDTO;
 public class LoginResponse {
     private String token;
     private Long expiresIn;
-    private Long userId;
+    private UserDTO user;
     private String preSignedPhotoUrl;
 }
