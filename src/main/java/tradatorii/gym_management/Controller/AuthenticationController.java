@@ -55,13 +55,22 @@ public class AuthenticationController {
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
+        String pUrl = null;
+        if(authenticatedUser.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
+            try {
+                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
                 .user(userMapper.toDTO(authenticatedUser))
+                .preSignedPhotoUrl(pUrl)
                 .build();
 
-        System.out.println(authenticatedUser.getRole());
 
         return ResponseEntity.ok(loginResponse);
     }
@@ -77,27 +86,14 @@ public class AuthenticationController {
 
         // Check if the token is valid for the current user
         boolean isTokenValid = jwtService.isTokenValid(token, user);
-        System.out.println(isTokenValid + " <--- is token valid");
 
         if (!isTokenValid) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        
-        String pUrl = null;
-        if(user.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
-            try {
-                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
 
         // Construct the response
         LoginResponse loginResponse = LoginResponse.builder()
-                .token(token)
-                .expiresIn(jwtService.getExpirationTime()) // Assuming you have this method
                 .user(userMapper.toDTO(user))
-                .preSignedPhotoUrl(pUrl)
                 .build();
 
         return ResponseEntity.ok(loginResponse);
