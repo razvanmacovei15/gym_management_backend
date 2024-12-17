@@ -28,8 +28,6 @@ public class MinioController {
 
     @PostMapping("/uploadFile")
     public ResponseEntity<String> uploadFile(
-//            @RequestParam("bucketName") String bucketName,
-//            @RequestParam("objectName") String objectName,
             @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) {
         try {
             String bucketName = user.getUserBucket();
@@ -42,7 +40,9 @@ public class MinioController {
     }
 
     @GetMapping("/generate-url")
-    public String generatePreSignedUrl(@RequestParam String bucketName, @RequestParam String objectName) throws Exception {
+    public String generatePreSignedUrl(@AuthenticationPrincipal User user) throws Exception {
+        String bucketName = user.getUserBucket();
+        String objectName = user.getProfilePhotoObjectName();
         return minioService.generatePreSignedUrl(bucketName, objectName);
     }
 }
