@@ -40,8 +40,9 @@ public class AuthenticationController {
         String userBucket = userService.createUserBucket(registeredUser); //TODO maybe move this into the minio service
         registeredUser.setUserBucket(userBucket);
         userService.setDefaultProfilePhoto(registeredUser);
+        User savedUser = userService.save(registeredUser);
 
-        return ResponseEntity.ok(registeredUser);
+        return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
