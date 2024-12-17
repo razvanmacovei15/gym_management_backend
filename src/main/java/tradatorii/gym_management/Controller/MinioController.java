@@ -34,4 +34,9 @@ public class MinioController {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
+
+    @GetMapping("/generate-url")
+    public String generatePreSignedUrl(@RequestParam String bucketName, @RequestParam String objectName) throws Exception {
+        return minioService.generatePreSignedUrl(bucketName, objectName);
+    }
 }

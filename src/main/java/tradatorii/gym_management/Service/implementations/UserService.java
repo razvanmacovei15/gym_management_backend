@@ -1,12 +1,12 @@
 package tradatorii.gym_management.Service.implementations;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Role;
 import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.UserServiceInterface;
+import tradatorii.gym_management.minio.MinioService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +16,7 @@ import java.util.Set;
 @Service
 public class UserService implements UserServiceInterface {
     private final UserRepo userRepository;
+    private final MinioService minioService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -61,6 +62,26 @@ public class UserService implements UserServiceInterface {
             throw new RuntimeException("User not found with id " + userId);
         }
 
+    }
+
+    @Override
+    public String createUserBucket(User user) {
+        String bucketName = user.getName() + user.getUserId() + "-bucket";
+        return minioService.createBucket(bucketName);
+    }
+
+    @Override
+    public void setDefaultProfilePhoto(User user) {
+        user.setProfilePhotoObjectName("defaultProfilePhoto.png");
+    }
+
+    @Override
+    public User createManager(User user) {
+        return User.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(Role.MANAGER)
+                .build();
     }
 
 }

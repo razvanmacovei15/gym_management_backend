@@ -13,4 +13,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     //create findAllUsers with role: MANAGER
     List<User> findAllByRole(Role role);
+
+    User createManager(User user);
 }

@@ -74,4 +74,7 @@ public class Task {
     @Column(name="updatedAt",nullable=false,unique=false)
     private LocalDateTime updatedAt;
 
+    @Column(name="taskBucket",nullable=true,unique=false)
+    private String taskBucket;
+
 }

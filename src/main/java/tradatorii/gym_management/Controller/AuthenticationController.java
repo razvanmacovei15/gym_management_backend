@@ -8,6 +8,7 @@ import tradatorii.gym_management.DTO.LoginDTO;
 import tradatorii.gym_management.DTO.RegisterUserDTO;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Mappers.UserMapper;
+import tradatorii.gym_management.Service.implementations.UserService;
 import tradatorii.gym_management.security.LoginResponse;
 import tradatorii.gym_management.security.services.AuthenticationService;
 import tradatorii.gym_management.security.services.JwtService;
@@ -24,15 +25,21 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService) {
+    private final UserService userService;
+
+    public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService, UserService userService) {
         this.userMapper = userMapper;
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDTO registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
+        String userBucket = userService.createUserBucket(registeredUser); //TODO maybe move this into the minio service
+        registeredUser.setUserBucket(userBucket);
+        userService.setDefaultProfilePhoto(registeredUser);
 
         return ResponseEntity.ok(registeredUser);
     }

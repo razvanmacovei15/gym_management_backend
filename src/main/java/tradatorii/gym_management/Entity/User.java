@@ -56,6 +56,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasksCreated;
 
+    @Column(name="userBucket",nullable=true,unique=false)
+    private String userBucket;
+
+    @Column(name="photoUrl",nullable=true,unique=false)
+    private String profilePhotoObjectName;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
