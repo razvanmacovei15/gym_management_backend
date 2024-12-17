@@ -26,6 +26,10 @@ public class Gym {
     @Column(name="address",nullable=false,unique=true)
     private String address;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name = "manager_id", nullable = false, unique = true)
+    private User manager;
+
     @ManyToMany(mappedBy = "gymSet")
     private Set<Task> taskSet=new HashSet<>();
 

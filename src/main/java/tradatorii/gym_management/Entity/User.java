@@ -62,6 +62,9 @@ public class User implements UserDetails {
     @Column(name="photoUrl",nullable=true,unique=false)
     private String profilePhotoObjectName;
 
+    @OneToOne(mappedBy = "manager")
+    private Gym gym; // Each manager can be linked to one gym
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
