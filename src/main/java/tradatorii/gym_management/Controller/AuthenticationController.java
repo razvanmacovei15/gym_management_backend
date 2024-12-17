@@ -9,6 +9,7 @@ import tradatorii.gym_management.DTO.RegisterUserDTO;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Mappers.UserMapper;
 import tradatorii.gym_management.Service.implementations.UserService;
+import tradatorii.gym_management.minio.MinioService;
 import tradatorii.gym_management.security.LoginResponse;
 import tradatorii.gym_management.security.services.AuthenticationService;
 import tradatorii.gym_management.security.services.JwtService;
@@ -27,11 +28,14 @@ public class AuthenticationController {
 
     private final UserService userService;
 
-    public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService, UserService userService) {
+    private final MinioService minioService;
+
+    public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService, UserService userService, MinioService minioService) {
         this.userMapper = userMapper;
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
         this.userService = userService;
+        this.minioService = minioService;
     }
 
     @PostMapping("/signup")
@@ -78,12 +82,23 @@ public class AuthenticationController {
         if (!isTokenValid) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
+        
+        String pUrl = null;
+        if(user.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
+            try {
+                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
 
         // Construct the response
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(token)
                 .expiresIn(jwtService.getExpirationTime()) // Assuming you have this method
-                .user(userMapper.toDTO(user))
+                .userId(user.getUserId())
+                .preSignedPhotoUrl(pUrl)
                 .build();
 
         return ResponseEntity.ok(loginResponse);
