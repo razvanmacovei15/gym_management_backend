@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.Entity.Gym;
+import tradatorii.gym_management.Entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,12 @@ public class GymMapper {
                 .build();
     }
 
-    public  Gym fromDTO(GymDTO gymDTO){
+    public  Gym fromDTO(GymDTO gymDTO, User manager){
         return Gym.builder()
                 .gymId(gymDTO.getId())
                 .name(gymDTO.getName())
                 .address(gymDTO.getAddress())
+                .manager(manager)
                 .build();
     }
 
