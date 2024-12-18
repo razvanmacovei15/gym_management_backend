@@ -98,6 +98,8 @@ public class TaskService implements TaskServiceInterface {
         }
         task.setGymSet(gyms);
 
+        System.out.println("hai sa dam mana cu mana si sa dam merge pe master");
+
         // Save and return the task
         return taskRepo.save(task);
     }
