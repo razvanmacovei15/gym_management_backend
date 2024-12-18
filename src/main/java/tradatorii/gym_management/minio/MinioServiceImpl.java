@@ -27,8 +27,6 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String getFile(String bucketName, String objectName) {
-
-
         return null;
     }
 

@@ -30,6 +30,7 @@ public class MinioController {
     public ResponseEntity<String> uploadFile(
             @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) {
         try {
+            //TODO and maybe move this too minioService
             String bucketName = user.getUserBucket();
             String objectName = userService.generateProfilePhotoName(user);
             minioService.uploadFile(bucketName, objectName, file);
