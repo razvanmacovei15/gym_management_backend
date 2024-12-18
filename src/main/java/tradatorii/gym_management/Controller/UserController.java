@@ -78,10 +78,11 @@ public class UserController {
         try{
             String userBucket = user.getUserBucket();
             String profilePhotoName = this.userService.generateProfilePhotoName(user);
+            String ceva = userService.setProfilePhotoObjectName(profilePhotoName, file);
 
-            minioService.uploadFile(userBucket, profilePhotoName, file);
+            userService.uploadProfilePicture(file, user);
 
-            return minioService.generatePreSignedUrl(userBucket, profilePhotoName);
+            return minioService.generatePreSignedUrl(userBucket, ceva);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
