@@ -65,7 +65,6 @@ public class TaskService implements TaskServiceInterface {
                     t.setStatus(task.getStatus());
                     t.setUsersResponsibleForTask(task.getUsersResponsibleForTask());
                     t.setGymSet(task.getGymSet());
-                    t.setSubcategory(task.getSubcategory());
                     return taskRepo.save(t);
                 })
                 .orElseThrow(() -> new RuntimeException("Task not found with id " + id));
@@ -79,7 +78,6 @@ public class TaskService implements TaskServiceInterface {
                 .description(taskDTO.getTaskDTO().getDescription())
                 .deadline(taskDTO.getTaskDTO().getDeadline())
                 .priority(taskDTO.getTaskDTO().getPriority())
-                .subcategory(taskDTO.getTaskDTO().getSubcategory())
                 .status(Status.TO_DO) // Default status
                 .build();
 

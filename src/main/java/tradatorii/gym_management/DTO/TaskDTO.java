@@ -20,7 +20,6 @@ public class TaskDTO {
     private String description;
     private String deadline;
     private String priority;
-    private Subcategory subcategory;
     private Status status;
     private List<UserDTO> users;
     private List<GymDTO> gyms;

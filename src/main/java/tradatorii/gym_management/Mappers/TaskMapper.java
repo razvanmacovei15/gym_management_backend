@@ -52,7 +52,6 @@ public class TaskMapper {
                 .description(task.getDescription())
                 .deadline(task.getDeadline())
                 .priority(task.getPriority())
-                .subcategory(task.getSubcategory())
                 .status(task.getStatus())
                 .gyms(gymDTOList)
                 .users(userDTOList)

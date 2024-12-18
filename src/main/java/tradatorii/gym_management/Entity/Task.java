@@ -62,10 +62,6 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "gymId"))
     private Set<Gym> gymSet=new HashSet<>();
 
-    @Column(name="subcategory")
-    @Enumerated(EnumType.STRING)
-    private Subcategory subcategory;
-
     @CreationTimestamp
     @Column(name="createdAt",nullable=false,unique=false)
     private LocalDateTime createdAt;
