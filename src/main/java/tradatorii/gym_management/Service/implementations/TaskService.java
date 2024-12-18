@@ -74,6 +74,7 @@ public class TaskService implements TaskServiceInterface {
     public Task createNewTask(TaskRequestDTO taskDTO) {
         // Map TaskDTO to Task Entity
         Task task = Task.builder()
+                .title(taskDTO.getTaskDTO().getTitle())
                 .category(taskDTO.getTaskDTO().getCategory())
                 .description(taskDTO.getTaskDTO().getDescription())
                 .deadline(taskDTO.getTaskDTO().getDeadline())
