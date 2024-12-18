@@ -1,9 +1,9 @@
 package tradatorii.gym_management.Enums;
 
 public enum Status {
-
-    PENDING,
+    DONE,
     IN_PROGRESS,
-    DONE
-
+    TO_DO,
+    CANCELLED,
+    BACKLOG
 }

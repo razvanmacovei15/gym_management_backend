@@ -1,13 +1,18 @@
 package tradatorii.gym_management.Service.implementations;
+import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Role;
 import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.UserServiceInterface;
+import tradatorii.gym_management.minio.MinioService;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +21,7 @@ import java.util.Set;
 @Service
 public class UserService implements UserServiceInterface {
     private final UserRepo userRepository;
+    private final MinioService minioService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -61,6 +67,105 @@ public class UserService implements UserServiceInterface {
             throw new RuntimeException("User not found with id " + userId);
         }
 
+    }
+
+    @Override
+    public String createUserBucket(User user) {
+        String bucketName = user.getName().toLowerCase() + "-" + user.getUserId() + "-bucket";
+        return minioService.createBucket(bucketName);
+    }
+
+    @Override
+    public void setDefaultProfilePhoto(User user) {
+        user.setProfilePhotoObjectName("defaultProfilePhoto.png");
+    }
+
+    @Override
+    public String changeProfilePicture(String objectName) {
+        return null;
+    }
+
+    @Override
+    public User createManager(User user) {
+        return User.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(Role.MANAGER)
+                .build();
+    }
+
+    @Override
+    public String generateProfilePhotoName(User user) {
+        return user.getName() + user.getUserId() + "-profilePhoto";
+    }
+
+    @Override
+    public User updateUserInformation(Long id, UserDTO updateDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
+
+        if (updateDTO.getName() != null) {
+            existingUser.setName(updateDTO.getName());
+        }
+
+        if (updateDTO.getEmail() != null) {
+            existingUser.setEmail(updateDTO.getEmail());
+        }
+
+        return userRepository.save(existingUser);
+    }
+
+    public String generatePreSignedUrl(User user) {
+        String pUrl = null;
+        if(user.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
+            try {
+                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                pUrl = minioService.generatePreSignedUrl(user.getUserBucket(), user.getProfilePhotoObjectName());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return pUrl;
+    }
+
+    @Override
+    public String setProfilePhotoObjectName(String objectName, MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            String fileType = file.getContentType();
+
+            //extract extension from filetype
+            assert fileType != null;
+            String[] fileTypeParts = fileType.split("/");
+
+            return objectName + "." + fileTypeParts[1];
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void uploadProfilePicture(MultipartFile file, User user) {
+        String bucketName = user.getUserBucket();
+        String objectName = generateProfilePhotoName(user);
+        String photoMinioObject;
+
+        // Generate object name with extension
+        photoMinioObject = setProfilePhotoObjectName(objectName, file);
+
+        // Upload to Minio
+        try {
+            minioService.uploadFile(bucketName, photoMinioObject, file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        // Update user profile
+        user.setProfilePhotoObjectName(photoMinioObject);
+        save(user);
     }
 
 }

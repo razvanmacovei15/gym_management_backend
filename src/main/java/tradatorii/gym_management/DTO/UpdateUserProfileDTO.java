@@ -1,17 +1,15 @@
 package tradatorii.gym_management.DTO;
 
 import lombok.*;
-import tradatorii.gym_management.Enums.Role;
-
-import java.util.Objects;
+import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @EqualsAndHashCode
-public class UserDTO {
-    private Long id;
+@NoArgsConstructor
+public class UpdateUserProfileDTO {
+    private MultipartFile file;
     private String name;
     private String email;
-    private Role role;
 }

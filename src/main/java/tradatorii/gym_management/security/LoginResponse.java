@@ -10,6 +10,7 @@ import tradatorii.gym_management.DTO.UserDTO;
 @Builder
 public class LoginResponse {
     private String token;
-    private long expiresIn;
+    private Long expiresIn;
     private UserDTO user;
+    private String preSignedUrl;
 }

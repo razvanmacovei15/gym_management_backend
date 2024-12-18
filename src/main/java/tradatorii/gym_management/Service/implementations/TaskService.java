@@ -36,7 +36,6 @@ public class TaskService implements TaskServiceInterface {
     }
 
     public List<Task> getAllTasks() {
-        System.out.println("Getting all tasks");
         return taskRepo.findAll();
     }
 
@@ -66,7 +65,6 @@ public class TaskService implements TaskServiceInterface {
                     t.setStatus(task.getStatus());
                     t.setUsersResponsibleForTask(task.getUsersResponsibleForTask());
                     t.setGymSet(task.getGymSet());
-                    t.setSubcategory(task.getSubcategory());
                     return taskRepo.save(t);
                 })
                 .orElseThrow(() -> new RuntimeException("Task not found with id " + id));
@@ -76,12 +74,12 @@ public class TaskService implements TaskServiceInterface {
     public Task createNewTask(TaskRequestDTO taskDTO) {
         // Map TaskDTO to Task Entity
         Task task = Task.builder()
+                .title(taskDTO.getTaskDTO().getTitle())
                 .category(taskDTO.getTaskDTO().getCategory())
                 .description(taskDTO.getTaskDTO().getDescription())
                 .deadline(taskDTO.getTaskDTO().getDeadline())
                 .priority(taskDTO.getTaskDTO().getPriority())
-                .subcategory(taskDTO.getTaskDTO().getSubcategory())
-                .status(tradatorii.gym_management.Enums.Status.PENDING) // Default status
+                .status(Status.TO_DO) // Default status
                 .build();
 
         // Fetch Users and Set to Task
@@ -99,6 +97,8 @@ public class TaskService implements TaskServiceInterface {
             gym.ifPresent(gyms::add);
         }
         task.setGymSet(gyms);
+
+        System.out.println("hai sa dam mana cu mana si sa dam merge pe master");
 
         // Save and return the task
         return taskRepo.save(task);

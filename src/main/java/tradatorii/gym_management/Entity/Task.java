@@ -26,6 +26,9 @@ public class Task {
     @Id
     private Long taskId;
 
+    @Column(name="title",nullable=false,unique=false)
+    private String title;
+
     @Column(name="category",nullable=false,unique = false)
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -62,10 +65,6 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "gymId"))
     private Set<Gym> gymSet=new HashSet<>();
 
-    @Column(name="subcategory")
-    @Enumerated(EnumType.STRING)
-    private Subcategory subcategory;
-
     @CreationTimestamp
     @Column(name="createdAt",nullable=false,unique=false)
     private LocalDateTime createdAt;
@@ -73,5 +72,8 @@ public class Task {
     @UpdateTimestamp
     @Column(name="updatedAt",nullable=false,unique=false)
     private LocalDateTime updatedAt;
+
+    @Column(name="taskBucket",nullable=true,unique=false)
+    private String taskBucket;
 
 }

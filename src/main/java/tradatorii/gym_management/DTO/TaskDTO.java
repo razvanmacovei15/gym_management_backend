@@ -16,11 +16,11 @@ import java.util.List;
 public class TaskDTO {
 
     private Long taskId;
+    private String title;
     private Category category;
     private String description;
     private String deadline;
     private String priority;
-    private Subcategory subcategory;
     private Status status;
     private List<UserDTO> users;
     private List<GymDTO> gyms;

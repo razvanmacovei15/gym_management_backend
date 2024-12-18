@@ -20,9 +20,10 @@ import java.util.stream.Collectors;
 public class TaskMapper {
 
     UserMapper userMapper = new UserMapper();
-    GymMapper gymMapper = new GymMapper();
+    GymMapper gymMapper = new GymMapper(userMapper);
     public Task toEntity(TaskDTO taskDTO){
         return Task.builder()
+                .title(taskDTO.getTitle())
                 .category(taskDTO.getCategory())
                 .description(taskDTO.getDescription())
                 .deadline(taskDTO.getDeadline())
@@ -48,11 +49,11 @@ public class TaskMapper {
 
         return TaskDTO.builder()
                 .taskId(task.getTaskId())
+                .title(task.getTitle())
                 .category(task.getCategory())
                 .description(task.getDescription())
                 .deadline(task.getDeadline())
                 .priority(task.getPriority())
-                .subcategory(task.getSubcategory())
                 .status(task.getStatus())
                 .gyms(gymDTOList)
                 .users(userDTOList)

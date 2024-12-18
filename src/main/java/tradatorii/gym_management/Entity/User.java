@@ -56,6 +56,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasksCreated;
 
+    @Column(name="userBucket",nullable=true,unique=false)
+    private String userBucket;
+
+    @Column(name="photoUrl",nullable=true,unique=false)
+    private String profilePhotoObjectName;
+
+    @OneToOne(mappedBy = "manager")
+    private Gym gym; // Each manager can be linked to one gym
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
