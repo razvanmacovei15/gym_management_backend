@@ -153,15 +153,15 @@ public class UserService implements UserServiceInterface {
         String objectName = generateProfilePhotoName(user);
         String photoMinioObject;
 
+        // Generate object name with extension
+        photoMinioObject = setProfilePhotoObjectName(objectName, file);
+
         // Upload to Minio
         try {
-            minioService.uploadFile(bucketName, objectName, file);
+            minioService.uploadFile(bucketName, photoMinioObject, file);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        // Generate object name with extension
-        photoMinioObject = setProfilePhotoObjectName(objectName, file);
 
         // Update user profile
         user.setProfilePhotoObjectName(photoMinioObject);
