@@ -56,8 +56,11 @@ public class GymController {
         return ResponseEntity.ok(gymDTOs);
     }
 
-    @GetMapping("/getManagers")
-    public ResponseEntity<List<UserDTO>> getManagersByGymIds(@RequestParam List<Long> gymIds) {
+    @PostMapping("/getManagers")
+    public ResponseEntity<List<UserDTO>> getManagersByGymIds(@RequestBody List<Long> gymIds) {
+        if (gymIds == null || gymIds.isEmpty()) {
+            throw new IllegalArgumentException("gymIds parameter is missing or empty");
+        }
         List<User> managers = gymService.getManagersByGymIds(gymIds);
         List<UserDTO> managersDTO = managers.stream().map(userMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok(managersDTO);
