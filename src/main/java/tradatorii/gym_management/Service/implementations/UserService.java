@@ -71,7 +71,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public String createUserBucket(User user) {
-        String bucketName = user.getName() + "-" + user.getUserId() + "-bucket";
+        String bucketName = user.getName().toLowerCase() + "-" + user.getUserId() + "-bucket";
         return minioService.createBucket(bucketName);
     }
 
