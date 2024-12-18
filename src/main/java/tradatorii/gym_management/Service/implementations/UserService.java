@@ -1,6 +1,8 @@
 package tradatorii.gym_management.Service.implementations;
+import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
@@ -9,6 +11,8 @@ import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.UserServiceInterface;
 import tradatorii.gym_management.minio.MinioService;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -109,6 +113,39 @@ public class UserService implements UserServiceInterface {
         }
 
         return userRepository.save(existingUser);
+    }
+
+    public String generatePreSignedUrl(User user) {
+        String pUrl = null;
+        if(user.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
+            try {
+                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                pUrl = minioService.generatePreSignedUrl(user.getUserBucket(), user.getProfilePhotoObjectName());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return pUrl;
+    }
+
+    @Override
+    public String setProfilePhotoObjectName(String objectName, MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            String fileType = file.getContentType();
+
+            //extract extension from filetype
+            assert fileType != null;
+            String[] fileTypeParts = fileType.split("/");
+
+            return objectName + "." + fileTypeParts[1];
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

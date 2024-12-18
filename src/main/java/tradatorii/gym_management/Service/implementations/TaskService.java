@@ -36,7 +36,6 @@ public class TaskService implements TaskServiceInterface {
     }
 
     public List<Task> getAllTasks() {
-        System.out.println("Getting all tasks");
         return taskRepo.findAll();
     }
 

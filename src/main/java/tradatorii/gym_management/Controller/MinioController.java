@@ -33,6 +33,12 @@ public class MinioController {
             String bucketName = user.getUserBucket();
             String objectName = userService.generateProfilePhotoName(user);
             minioService.uploadFile(bucketName, objectName, file);
+
+            //TODO need to move this to userService
+            String photoMinioObject = userService.setProfilePhotoObjectName(objectName, file);
+            user.setProfilePhotoObjectName(photoMinioObject);
+            userService.save(user);
+
             return ResponseEntity.ok("File uploaded successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
@@ -43,6 +49,8 @@ public class MinioController {
     public String generatePreSignedUrl(@AuthenticationPrincipal User user) throws Exception {
         String bucketName = user.getUserBucket();
         String objectName = user.getProfilePhotoObjectName();
+        if(objectName.equals("defaultProfilePhoto.png"))
+            return minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
         return minioService.generatePreSignedUrl(bucketName, objectName);
     }
 }

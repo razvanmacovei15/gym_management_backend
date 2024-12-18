@@ -12,5 +12,5 @@ public class LoginResponse {
     private String token;
     private Long expiresIn;
     private UserDTO user;
-    private String preSignedPhotoUrl;
+    private String preSignedUrl;
 }

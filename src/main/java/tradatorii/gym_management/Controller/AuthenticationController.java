@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import tradatorii.gym_management.DTO.LoginDTO;
 import tradatorii.gym_management.DTO.RegisterUserDTO;
+import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Mappers.UserMapper;
 import tradatorii.gym_management.Service.implementations.UserService;
@@ -55,22 +56,14 @@ public class AuthenticationController {
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        String pUrl = null;
-        if(authenticatedUser.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
-            try {
-                pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+        String pUrl = userService.generatePreSignedUrl(authenticatedUser);
 
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
                 .user(userMapper.toDTO(authenticatedUser))
-                .preSignedPhotoUrl(pUrl)
+                .preSignedUrl(pUrl)
                 .build();
-
 
         return ResponseEntity.ok(loginResponse);
     }
@@ -91,10 +84,15 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
+        String pUrl = userService.generatePreSignedUrl(user);
+
         // Construct the response
         LoginResponse loginResponse = LoginResponse.builder()
                 .user(userMapper.toDTO(user))
+                .preSignedUrl(pUrl)
                 .build();
+
+        System.out.println(user.getProfilePhotoObjectName());
 
         return ResponseEntity.ok(loginResponse);
     }
