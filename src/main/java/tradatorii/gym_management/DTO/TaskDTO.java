@@ -16,6 +16,7 @@ import java.util.List;
 public class TaskDTO {
 
     private Long taskId;
+    private String title;
     private Category category;
     private String description;
     private String deadline;

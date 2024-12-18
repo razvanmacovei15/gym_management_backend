@@ -26,6 +26,9 @@ public class Task {
     @Id
     private Long taskId;
 
+    @Column(name="title",nullable=false,unique=false)
+    private String title;
+
     @Column(name="category",nullable=false,unique = false)
     @Enumerated(EnumType.STRING)
     private Category category;
