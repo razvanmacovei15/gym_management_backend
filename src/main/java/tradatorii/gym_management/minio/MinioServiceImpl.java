@@ -30,26 +30,20 @@ public class MinioServiceImpl implements MinioService {
         return null;
     }
 
+    @Override
     public void uploadFile(String bucketName, String objectName, MultipartFile file) throws Exception {
         try (InputStream inputStream = file.getInputStream()) {
-            String fileType = file.getContentType();
-
-            //extract extension from filetype
-            assert fileType != null;
-            String[] fileTypeParts = fileType.split("/");
-
-            String filenameWithExtension = objectName + "." + fileTypeParts[1];
-
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
-                            .object(filenameWithExtension)
+                            .object(objectName)
                             .stream(inputStream, file.getSize(), -1)
                             .contentType(file.getContentType())
                             .build()
             );
         }
     }
+
 
     @Override
     public void deleteFile(String bucketName, String objectName) {

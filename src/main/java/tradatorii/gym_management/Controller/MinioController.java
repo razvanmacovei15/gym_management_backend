@@ -26,26 +26,6 @@ public class MinioController {
         minioService.createBucket(bucketName);
     }
 
-    @PostMapping("/uploadFile")
-    public ResponseEntity<String> uploadFile(
-            @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) {
-        try {
-            //TODO and maybe move this too minioService
-            String bucketName = user.getUserBucket();
-            String objectName = userService.generateProfilePhotoName(user);
-            minioService.uploadFile(bucketName, objectName, file);
-
-            //TODO need to move this to userService
-            String photoMinioObject = userService.setProfilePhotoObjectName(objectName, file);
-            user.setProfilePhotoObjectName(photoMinioObject);
-            userService.save(user);
-
-            return ResponseEntity.ok("File uploaded successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
-        }
-    }
-
     @GetMapping("/generate-url")
     public String generatePreSignedUrl(@AuthenticationPrincipal User user) throws Exception {
         String bucketName = user.getUserBucket();

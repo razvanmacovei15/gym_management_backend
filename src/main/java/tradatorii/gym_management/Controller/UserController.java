@@ -36,7 +36,6 @@ public class UserController {
         return user;
     }
 
-
     @DeleteMapping
     public ResponseEntity<Long> deleteUser(@RequestParam Long id)
     {
@@ -65,7 +64,6 @@ public class UserController {
         User updatedUser = this.userService.update(userId, user);
         UserDTO updatedUserDTO = userMapper.toDTO(updatedUser);
         return ResponseEntity.ok(updatedUserDTO);
-
     }
 
     @GetMapping("/createdTasks")
@@ -73,7 +71,6 @@ public class UserController {
     {
         Set<Task> tasks = this.userService.getCreatedTasks(userId);
         return taskMapper.taskDTOList(tasks);
-
     }
 
     @PostMapping("/changeProfilePicture")
@@ -95,6 +92,17 @@ public class UserController {
         User updatedUser = this.userService.updateUserInformation(userId, userDTO);
         UserDTO updatedUserDTO = userMapper.toDTO(updatedUser);
         return ResponseEntity.ok(updatedUserDTO);
+    }
+
+    @PostMapping("/uploadFile")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
+                                             @AuthenticationPrincipal User user) {
+        try {
+            userService.uploadProfilePicture(file, user);
+            return ResponseEntity.ok("File uploaded successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
+        }
     }
 
 }
