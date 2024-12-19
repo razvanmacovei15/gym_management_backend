@@ -17,4 +17,6 @@ public interface TaskServiceInterface {
     Task updateTask(Long id, Task task);
     Task createNewTask(TaskRequestDTO taskDTO);
 
+    Task getTaskById(Long id);
+
 }

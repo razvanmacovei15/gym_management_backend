@@ -77,5 +77,13 @@ public class TaskController {
         return ResponseEntity.ok(taskService.deleteTask(id));
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<TaskDTO> getTask(@PathVariable Long id)
+    {
+        Task task = taskService.getTaskById(id);
+        TaskDTO taskDTO = taskMapper.mapFrom(task);
+        return ResponseEntity.ok(taskDTO);
+    }
+
 
 }

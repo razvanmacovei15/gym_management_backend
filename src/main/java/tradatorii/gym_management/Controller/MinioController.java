@@ -34,4 +34,11 @@ public class MinioController {
             return minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
         return minioService.generatePreSignedUrl(bucketName, objectName);
     }
+
+    @GetMapping("/generate-manager-url")
+    public String generateManagerPreSignedUrl(@RequestParam Long userId){
+        User user = userService.getById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        return userService.generatePreSignedUrl(user);
+    }
 }

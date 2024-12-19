@@ -18,6 +18,7 @@ public class GymMapper {
                 .id(gym.getGymId())
                 .name(gym.getName())
                 .address(gym.getAddress())
+                .managerId(gym.getManager().getUserId())
                 .build();
     }
 
