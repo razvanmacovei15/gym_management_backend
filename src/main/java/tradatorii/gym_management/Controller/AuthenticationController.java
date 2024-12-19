@@ -58,6 +58,8 @@ public class AuthenticationController {
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
+        System.out.println("user is logging in");
+
         String pUrl = userService.generatePreSignedUrl(authenticatedUser);
 
         LoginResponse loginResponse = LoginResponse.builder()
@@ -66,6 +68,8 @@ public class AuthenticationController {
                 .user(userMapper.toDTO(authenticatedUser))
                 .preSignedUrl(pUrl)
                 .build();
+
+        System.out.println(loginResponse.getUser());
 
         return ResponseEntity.ok(loginResponse);
     }

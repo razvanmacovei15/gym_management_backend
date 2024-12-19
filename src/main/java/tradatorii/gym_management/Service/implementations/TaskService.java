@@ -104,4 +104,9 @@ public class TaskService implements TaskServiceInterface {
         return taskRepo.save(task);
     }
 
+    @Override
+    public Task getTaskById(Long id) {
+        return taskRepo.findById(id).orElseThrow(() -> new RuntimeException("Task not found with id " + id));
+    }
+
 }
