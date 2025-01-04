@@ -39,6 +39,11 @@ public class TaskService implements TaskServiceInterface {
         return taskRepo.findAll();
     }
 
+    @Override
+    public List<Task> findAllOrderByCreatedAtDesc() {
+        return taskRepo.findAllByOrderByCreatedAt();
+    }
+
     public Task createTask(Task task) {
         return taskRepo.save(task);
     }
@@ -97,8 +102,6 @@ public class TaskService implements TaskServiceInterface {
             gym.ifPresent(gyms::add);
         }
         task.setGymSet(gyms);
-
-        System.out.println("hai sa dam mana cu mana si sa dam merge pe master");
 
         // Save and return the task
         return taskRepo.save(task);

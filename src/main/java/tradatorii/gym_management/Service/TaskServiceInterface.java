@@ -10,6 +10,8 @@ public interface TaskServiceInterface {
     Task save(Task task);
     List<Task> getAllTasks();
 
+    List<Task> findAllOrderByCreatedAtDesc();
+
     Task createTask(Task task);
     Long deleteTask(Long id);
     Status updateStatus(Long id, Status status);

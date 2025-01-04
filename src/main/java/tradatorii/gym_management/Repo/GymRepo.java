@@ -12,4 +12,6 @@ import java.util.List;
 public interface GymRepo extends JpaRepository<Gym,Long> {
     @Query("SELECT g.manager FROM Gym g WHERE g.gymId IN :gymIds")
     List<User> findManagersByGymIds(List<Long> gymIds);
+
+    Gym getGymByGymId(Long gymId);
 }

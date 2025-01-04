@@ -23,6 +23,5 @@ public interface UserServiceInterface {
     String changeProfilePicture(String objectName);
     User updateUserInformation(Long id, UserDTO updateDTO);
     String generatePreSignedUrl(User user);
-
     String setProfilePhotoObjectName(String objectName, MultipartFile file) throws Exception;
 }

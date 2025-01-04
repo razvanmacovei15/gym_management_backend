@@ -10,7 +10,6 @@ public interface MinioService {
     void uploadFile(String bucketName, String objectName, MultipartFile file) throws Exception;
     void deleteFile(String bucketName, String objectName);
     String generatePreSignedUrl(String bucketName, String objectName) throws Exception;
-
     String createBucket(String bucketName);
     void deleteBucket(String bucketName);
 }

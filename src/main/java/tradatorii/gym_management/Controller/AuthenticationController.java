@@ -58,8 +58,6 @@ public class AuthenticationController {
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        System.out.println("user is logging in");
-
         String pUrl = userService.generatePreSignedUrl(authenticatedUser);
 
         LoginResponse loginResponse = LoginResponse.builder()
@@ -69,7 +67,7 @@ public class AuthenticationController {
                 .preSignedUrl(pUrl)
                 .build();
 
-        System.out.println(loginResponse.getUser());
+        System.out.println(loginResponse.getPreSignedUrl());
 
         return ResponseEntity.ok(loginResponse);
     }
@@ -98,7 +96,7 @@ public class AuthenticationController {
                 .preSignedUrl(pUrl)
                 .build();
 
-        System.out.println(user.getProfilePhotoObjectName());
+        System.out.println(loginResponse);
 
         return ResponseEntity.ok(loginResponse);
     }

@@ -8,10 +8,12 @@ import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Status;
+import tradatorii.gym_management.Service.implementations.UserService;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,6 +23,7 @@ public class TaskMapper {
 
     UserMapper userMapper = new UserMapper();
     GymMapper gymMapper = new GymMapper(userMapper);
+
     public Task toEntity(TaskDTO taskDTO){
         return Task.builder()
                 .title(taskDTO.getTitle())
@@ -69,13 +72,9 @@ public class TaskMapper {
         taskRequestDTO.setTaskDTO(taskDTO);
         Set<User> users = task.getUsersResponsibleForTask();
         Set<Gym> gyms = task.getGymSet();
-        for(User user : users)
-            System.out.println(user.getName());
 
         List<User> userList = new ArrayList<>(users);
         List<Gym> gymList = new ArrayList<>(gyms);
-        for(User user : userList)
-            System.out.println(user.getName());
 
         List<UserDTO> userDTOList = userMapper.toDTOList(userList);
         List<GymDTO> gymDTOList = gymMapper.toDTOList(gymList);
