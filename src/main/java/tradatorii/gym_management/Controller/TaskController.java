@@ -13,11 +13,14 @@ import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Status;
 import tradatorii.gym_management.Mappers.TaskMapper;
+import tradatorii.gym_management.Service.GymServiceInterface;
 import tradatorii.gym_management.Service.TaskServiceInterface;
+import tradatorii.gym_management.Service.UserServiceInterface;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,8 @@ import java.util.stream.Collectors;
 public class TaskController {
 
     private TaskServiceInterface taskService;
+    private UserServiceInterface userService;
+    private final GymServiceInterface gymService;
     private final TaskMapper taskMapper;
 
     @PostMapping("/create")
@@ -47,10 +52,10 @@ public class TaskController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<TaskRequestDTO>> getAllTasks()
+    public ResponseEntity<List<TaskDTO>> getAllTasks()
     {
-        List<Task> tasks = taskService.getAllTasks();
-        return ResponseEntity.ok(tasks.stream().map(taskMapper::mapToRequest).collect(Collectors.toList()));
+        List<Task> tasks = taskService.findAllOrderByCreatedAtDesc();
+        return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
     }
 
 
@@ -63,16 +68,44 @@ public class TaskController {
     @PatchMapping("/update")
     public ResponseEntity<TaskDTO> updateTask(@RequestParam Long taskId, @RequestBody TaskDTO taskDTO)
     {
-        Task task = taskMapper.toEntity(taskDTO);
-        Task updatedTask = taskService.updateTask(taskId, task);
+        System.out.println("TaskDTO: " + taskDTO);
+
+        // Get the existing task from the database
+        Task existingTask = taskService.getTaskById(taskId);
+
+        // Update the basic properties of the task
+        existingTask.setTitle(taskDTO.getTitle());
+        existingTask.setCategory(taskDTO.getCategory());
+        existingTask.setDescription(taskDTO.getDescription());
+        existingTask.setDeadline(taskDTO.getDeadline());
+        existingTask.setPriority(taskDTO.getPriority());
+        existingTask.setStatus(taskDTO.getStatus());
+
+        // Update the gym set
+        Set<Gym> gymsToUpdate = taskDTO.getGyms().stream()
+                .map(gymDTO -> gymService.getGymById(gymDTO.getId()))
+                .collect(Collectors.toSet());
+        existingTask.setGymSet(gymsToUpdate);
+
+        // Update the users set
+        Set<User> usersToUpdate = taskDTO.getUsers().stream()
+                .map(userDTO -> userService.getById(userDTO.getId()).orElseThrow(() -> new RuntimeException("User not found")))
+                .collect(Collectors.toSet());
+        existingTask.setUsersResponsibleForTask(usersToUpdate);
+
+        // Save the updated task
+        Task updatedTask = taskService.updateTask(taskId, existingTask);
+
+        // Convert back to DTO and return
         TaskDTO updatedTaskDTO = taskMapper.mapFrom(updatedTask);
         System.out.println(updatedTaskDTO);
+
         return ResponseEntity.ok(updatedTaskDTO);
 
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Long> deleteTask(@PathVariable Long id)
+    @DeleteMapping("/delete")
+    public ResponseEntity<Long> deleteTask(@RequestParam Long id)
     {
         return ResponseEntity.ok(taskService.deleteTask(id));
     }

@@ -41,4 +41,13 @@ public class MinioController {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         return userService.generatePreSignedUrl(user);
     }
+
+    @PostMapping("/upload")
+    public void uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("bucketName") String bucketName,
+            @RequestParam("objectName") String objectName) throws Exception {
+
+        minioService.uploadFile(bucketName, objectName, file);
+    }
 }

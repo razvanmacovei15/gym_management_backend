@@ -19,6 +19,11 @@ public class GymService implements GymServiceInterface {
     }
 
     @Override
+    public Gym getGymById(Long id) {
+        return gymRepo.getGymByGymId(id);
+    }
+
+    @Override
     public List<Gym> getAllGyms() {
         return gymRepo.findAll();
     }
