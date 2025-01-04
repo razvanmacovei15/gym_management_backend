@@ -60,6 +60,7 @@ public class TaskMapper {
                 .status(task.getStatus())
                 .gyms(gymDTOList)
                 .users(userDTOList)
+
                 .build();
     }
 

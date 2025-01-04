@@ -24,5 +24,4 @@ public class TaskDTO {
     private Status status;
     private List<UserDTO> users;
     private List<GymDTO> gyms;
-
 }
