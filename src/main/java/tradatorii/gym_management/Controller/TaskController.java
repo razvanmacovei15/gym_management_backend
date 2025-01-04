@@ -121,8 +121,8 @@ public class TaskController {
         return ResponseEntity.ok(taskService.deleteTask(id));
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<TaskDTO> getTask(@PathVariable Long id)
+    @GetMapping("/get")
+    public ResponseEntity<TaskDTO> getTask(@RequestParam Long id)
     {
         Task task = taskService.getTaskById(id);
         TaskDTO taskDTO = taskMapper.mapFrom(task);
