@@ -9,6 +9,8 @@ import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Service.implementations.UserService;
 import tradatorii.gym_management.minio.MinioService;
 
+import java.util.List;
+
 @RequestMapping("/minio")
 @RestController
 @AllArgsConstructor
@@ -49,5 +51,10 @@ public class MinioController {
             @RequestParam("objectName") String objectName) throws Exception {
 
         minioService.uploadFile(bucketName, objectName, file);
+    }
+
+    @GetMapping("/getAll")
+    public List<String> getAllFiles(@RequestParam String bucketName) {
+        return minioService.getAllFiles(bucketName);
     }
 }

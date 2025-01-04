@@ -1,9 +1,14 @@
 package tradatorii.gym_management.Controller;
 
 
+import io.minio.GetObjectArgs;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.DTO.TaskDTO;
 import tradatorii.gym_management.DTO.TaskRequestDTO;
@@ -17,7 +22,10 @@ import tradatorii.gym_management.Service.GymServiceInterface;
 import tradatorii.gym_management.Service.TaskServiceInterface;
 import tradatorii.gym_management.Service.UserServiceInterface;
 import tradatorii.gym_management.Wrapper.TaskWrapper;
+import tradatorii.gym_management.minio.MinioService;
 
+import java.io.InputStream;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -40,12 +48,16 @@ public class TaskController {
     private TaskServiceInterface taskService;
     private UserServiceInterface userService;
     private final GymServiceInterface gymService;
+    private final MinioService minioService;
     private final TaskMapper taskMapper;
 
     @PostMapping("/create")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskRequestDTO taskRequestDTO)
     {
         Task task = taskService.createNewTask(taskRequestDTO);
+        String bucket = taskService.createTaskBucket(task);
+        task.setTaskBucket(bucket);
+        taskService.save(task);
         TaskDTO taskDTO = taskMapper.mapFrom(task);
         return ResponseEntity.ok(taskDTO);
 
@@ -57,7 +69,6 @@ public class TaskController {
         List<Task> tasks = taskService.findAllOrderByCreatedAtDesc();
         return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
     }
-
 
     @PatchMapping("/updateStatus")
     public ResponseEntity<Status> updateStatus(@RequestParam Long id, @RequestParam Status status)
@@ -116,6 +127,43 @@ public class TaskController {
         Task task = taskService.getTaskById(id);
         TaskDTO taskDTO = taskMapper.mapFrom(task);
         return ResponseEntity.ok(taskDTO);
+    }
+
+    @PostMapping("/uploadFile")
+    public String uploadFile(@RequestParam Long taskId, @RequestParam("file") MultipartFile file)
+    {
+        Task task = taskService.getTaskById(taskId);
+        String uploadedFile = null;
+        try {
+            uploadedFile = minioService.uploadTaskFile(task, file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return uploadedFile;
+    }
+
+    @GetMapping("/getFiles")
+    public List<String> getTaskFiles(@RequestParam Long taskId) {
+        Task task = taskService.getTaskById(taskId);
+        String taskBucket = task.getTaskBucket();
+        return minioService.getAllFiles(taskBucket);
+    }
+
+
+    @GetMapping("/downloadFile")
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam Long taskId, @RequestParam String fileName) {
+        Task task = taskService.getTaskById(taskId);
+        String taskBucket = task.getTaskBucket();
+
+        return minioService.downloadObject(taskBucket, fileName);
+    }
+
+    @DeleteMapping("/deleteFile")
+    public void deleteFile(@RequestParam Long taskId, @RequestParam String fileName) {
+        Task task = taskService.getTaskById(taskId);
+        String taskBucket = task.getTaskBucket();
+        minioService.deleteFile(taskBucket, fileName);
     }
 
 

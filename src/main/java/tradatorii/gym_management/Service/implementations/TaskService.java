@@ -13,6 +13,8 @@ import tradatorii.gym_management.Repo.GymRepo;
 import tradatorii.gym_management.Repo.TaskRepo;
 import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.TaskServiceInterface;
+import tradatorii.gym_management.minio.MinioService;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -27,8 +29,7 @@ public class TaskService implements TaskServiceInterface {
     private final TaskRepo taskRepo;
     private final UserRepo userRepo;
     private final GymRepo gymRepo;
-
-
+    private final MinioService minioService;
 
     @Override
     public Task save(Task task) {
@@ -110,6 +111,12 @@ public class TaskService implements TaskServiceInterface {
     @Override
     public Task getTaskById(Long id) {
         return taskRepo.findById(id).orElseThrow(() -> new RuntimeException("Task not found with id " + id));
+    }
+
+    @Override
+    public String createTaskBucket(Task task) {
+        String bucketName = "task-" + task.getTaskId() + "-bucket";
+        return minioService.createBucket(bucketName);
     }
 
 }

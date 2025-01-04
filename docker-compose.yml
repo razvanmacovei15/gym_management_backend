@@ -2,36 +2,64 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres
+    image: postgres:15
     container_name: gym_database
-    network_mode: bridge
-
     environment:
-      POSTGRES_DB: cats  # Database name to create
-      POSTGRES_USER: postgres  # Default user
-      POSTGRES_PASSWORD: Madagascar1523/  # User password
+      POSTGRES_DB: gym_management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Madagascar1523/
     ports:
-      - "5432:5432"  # Exposing PostgreSQL to the host
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persistent storage
+      - postgres_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    container_name: gym_minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: JJY8EqzPSpfzEXiZHHOE
+      MINIO_ROOT_PASSWORD: gtI2EAyeWguAOCsVeRCRgCkIpYkWsiRWVIEeDze5
+    volumes:
+      - minio_data:/data
 
   gym-app:
-    container_name: gym_app
-    network_mode: bridge
     build:
-      context: .  # Build from the current directory
-      dockerfile: Dockerfile # Assuming you have a Dockerfile to build your Spring Boot app
+      context: ./
+      dockerfile: Dockerfile
+    container_name: gym_app_compose
     environment:
       SPRING_APPLICATION_NAME: gym_management
-      SPRING_DATASOURCE_URL: jdbc:postgresql://razvandummy.go.ro:5432/cats
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/gym_management
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Madagascar1523/
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_H2_CONSOLE_ENABLED: "true"  # This is for H2, make sure your setup actually requires it
+      SPRING_MINIO_URL: http://minio:9000
+      SPRING_MINIO_ACCESS_NAME: JJY8EqzPSpfzEXiZHHOE
+      SPRING_MINIO_ACCESS_SECRET: gtI2EAyeWguAOCsVeRCRgCkIpYkWsiRWVIEeDze5
+      SERVER_PORT: 8010
     ports:
-      - "8010:8010"  # Map host port 8010 to container port 8010
+      - "8010:8010"
     depends_on:
-      - postgres  # Ensure postgres starts before the app
+      - postgres
+      - minio
+
+  react-app:
+    build:
+      context: ../../frontend/gym_management_frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "8020:8020"
+    environment:
+      - VITE_API_URL=http://gym-app:8010
+      - VITE_PORT=8020
+    depends_on:
+      - gym-app
 
 volumes:
-  postgres_data:  # Define the volume for PostgreSQL data
+  postgres_data:
+  minio_data:
