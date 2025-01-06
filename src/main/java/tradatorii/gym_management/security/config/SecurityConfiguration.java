@@ -44,8 +44,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configures access rules for different request patterns
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Allows public access to endpoints under "/auth/**" for login, registration, etc.
-                        .anyRequest().authenticated() // Requires authentication for all other endpoints
+                        .requestMatchers("/auth/login", "/auth/register").permitAll() // Public endpoints
+                        .requestMatchers("/auth/me").authenticated() // Secure endpoint
+                        .anyRequest().authenticated()
                 )
                 // Configures session management to be stateless as JWT tokens are used instead of server-side sessions
                 .sessionManagement(session -> session
@@ -76,6 +77,7 @@ public class SecurityConfiguration {
         // Registers the CORS configuration for all paths in the application
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 }

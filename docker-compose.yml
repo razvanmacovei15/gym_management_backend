@@ -55,7 +55,7 @@ services:
     ports:
       - "8020:8020"
     environment:
-      - VITE_API_URL=http://gym-app:8010
+#      - VITE_API_URL=http://gym-app:8010
       - VITE_PORT=8020
     depends_on:
       - gym-app

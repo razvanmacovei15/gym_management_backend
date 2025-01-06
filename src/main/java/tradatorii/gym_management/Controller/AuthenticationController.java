@@ -16,10 +16,7 @@ import tradatorii.gym_management.security.services.AuthenticationService;
 import tradatorii.gym_management.security.services.JwtService;
 @RequestMapping("/auth")
 @RestController
-@CrossOrigin(origins = "http://localhost:8020", // Replace with your frontend's URL
-        allowedHeaders = {"Authorization", "Content-Type"},
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
-        allowCredentials = "true")
+
 public class AuthenticationController {
     private final UserMapper userMapper;
 
@@ -76,6 +73,7 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponse> verifyToken(
             @RequestHeader("Authorization") String authorizationHeader,
             @AuthenticationPrincipal User user) {
+
         // Extract token from "Bearer <token>" format
         String token = authorizationHeader.startsWith("Bearer ")
                 ? authorizationHeader.substring(7)
@@ -93,12 +91,10 @@ public class AuthenticationController {
         // Construct the response
         LoginResponse loginResponse = LoginResponse.builder()
                 .user(userMapper.toDTO(user))
+                .token(token)
                 .preSignedUrl(pUrl)
                 .build();
 
-        System.out.println(loginResponse);
-
         return ResponseEntity.ok(loginResponse);
     }
-
 }

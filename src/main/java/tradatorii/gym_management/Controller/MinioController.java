@@ -14,10 +14,7 @@ import java.util.List;
 @RequestMapping("/minio")
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:8020", // Replace with your frontend's URL
-        allowedHeaders = {"Authorization", "Content-Type"},
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
-        allowCredentials = "true")
+
 public class MinioController {
 
     private final MinioService minioService;
