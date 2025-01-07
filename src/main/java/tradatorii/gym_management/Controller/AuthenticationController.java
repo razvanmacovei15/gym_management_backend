@@ -19,13 +19,9 @@ import tradatorii.gym_management.security.services.JwtService;
 
 public class AuthenticationController {
     private final UserMapper userMapper;
-
     private final JwtService jwtService;
-
     private final AuthenticationService authenticationService;
-
     private final UserService userService;
-
     private final MinioService minioService;
 
     public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService, UserService userService, MinioService minioService) {
@@ -51,6 +47,8 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDTO loginUserDto) {
+        System.out.println(loginUserDto.getEmail() + " " + loginUserDto.getPassword());
+
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
@@ -63,8 +61,6 @@ public class AuthenticationController {
                 .user(userMapper.toDTO(authenticatedUser))
                 .preSignedUrl(pUrl)
                 .build();
-
-        System.out.println(loginResponse.getPreSignedUrl());
 
         return ResponseEntity.ok(loginResponse);
     }

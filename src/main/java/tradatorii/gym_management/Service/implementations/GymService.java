@@ -41,7 +41,10 @@ public class GymService implements GymServiceInterface {
         return gymRepo.findManagersByGymIds(gymIds);
     }
 
-
+    @Override
+    public Gym getGymByUserId(User user) {
+        return gymRepo.findGymByManager(user);
+    }
 
 
 }

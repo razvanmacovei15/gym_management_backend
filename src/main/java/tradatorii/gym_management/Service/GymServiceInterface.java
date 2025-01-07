@@ -10,5 +10,5 @@ public interface GymServiceInterface {
     Gym getGymById(Long id);
     List<Gym> getAllGyms();
     List<User> getManagersByGymIds(List<Long> gymIds);
-
+    Gym getGymByUserId(User user);
 }
