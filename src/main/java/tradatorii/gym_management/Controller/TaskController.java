@@ -44,7 +44,7 @@ public class TaskController {
     private UserServiceInterface userService;
     private final GymServiceInterface gymService;
     private final MinioService minioService;
-    private final TaskMapper taskMapper;
+    private  TaskMapper taskMapper;
 
     @PostMapping("/create")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskRequestDTO taskRequestDTO)
