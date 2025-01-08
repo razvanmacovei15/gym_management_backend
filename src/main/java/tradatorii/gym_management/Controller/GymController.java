@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tradatorii.gym_management.DTO.DashBoard;
+import tradatorii.gym_management.DTO.GymBucket;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.Gym;
@@ -65,5 +67,16 @@ public class GymController {
         List<UserDTO> managersDTO = managers.stream().map(userMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok(managersDTO);
     }
+    @GetMapping("/dashboard")
+    public ResponseEntity<DashBoard> getDashboard() {
+        return ResponseEntity.ok(gymService.getDashBoard());
+    }
 
+    @GetMapping("/getBucket")
+    public ResponseEntity<GymBucket> getBucket(@RequestParam Long gymId) {
+        System.out.println("I got here");
+        GymBucket gymBucket = gymService.getBucket(gymId);
+        return ResponseEntity.ok(gymBucket);
+
+    }
 }
