@@ -105,7 +105,6 @@ public class TaskController {
 
         // Convert back to DTO and return
         TaskDTO updatedTaskDTO = taskMapper.mapFrom(updatedTask);
-        System.out.println(updatedTaskDTO);
 
         return ResponseEntity.ok(updatedTaskDTO);
 

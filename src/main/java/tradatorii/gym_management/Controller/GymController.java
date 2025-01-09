@@ -54,9 +54,7 @@ public class GymController {
         List<Gym> gyms = gymService.getAllGyms();
 
         List<GymDTO> gymDTOs = gyms.stream().map(gymMapper::toDTO).collect(Collectors.toList());
-        for(GymDTO gymDTO : gymDTOs){
-            System.out.println(gymDTO.getName());
-        }
+
         return ResponseEntity.ok(gymDTOs);
     }
 

@@ -47,7 +47,6 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDTO loginUserDto) {
-        System.out.println(loginUserDto.getEmail() + " " + loginUserDto.getPassword());
 
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 

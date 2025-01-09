@@ -112,7 +112,6 @@ public class MinioServiceImpl implements MinioService {
                 Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket(bucketName).build());
                 for(Result<Item> result : results) {
                     Item item = result.get();
-                    System.out.println(item.objectName());
                     filenames.add(item.objectName());
                 }
             } else {
