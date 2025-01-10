@@ -1,5 +1,7 @@
 package tradatorii.gym_management.Service;
 
+import tradatorii.gym_management.DTO.DashBoard;
+import tradatorii.gym_management.DTO.GymBucket;
 import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.User;
 
@@ -10,5 +12,8 @@ public interface GymServiceInterface {
     Gym getGymById(Long id);
     List<Gym> getAllGyms();
     List<User> getManagersByGymIds(List<Long> gymIds);
-    Gym getGymByUserId(User user);
+
+    GymBucket getBucket(Long gymId);
+
+    DashBoard getDashBoard();
 }

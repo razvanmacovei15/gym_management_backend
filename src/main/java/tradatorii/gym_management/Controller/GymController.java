@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tradatorii.gym_management.DTO.DashBoard;
+import tradatorii.gym_management.DTO.GymBucket;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.Gym;
@@ -67,21 +69,17 @@ public class GymController {
         List<UserDTO> managersDTO = managers.stream().map(userMapper::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok(managersDTO);
     }
-
-    @GetMapping("/getGymByGymId")
-    public ResponseEntity<GymDTO> getGymByGymId(@RequestParam Long gymId) {
-        Gym gym = gymService.getGymById(gymId);
-        GymDTO gymDTO = gymMapper.toDTO(gym);
-        return ResponseEntity.ok(gymDTO);
+    @GetMapping("/dashboard")
+    public ResponseEntity<DashBoard> getDashboard() {
+        return ResponseEntity.ok(gymService.getDashBoard());
     }
 
-    @GetMapping("/getGymByManagerId")
-    public ResponseEntity<GymDTO> getGymByUserId(@RequestParam Long userId) {
-        User manager = userService.getById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Manager not found"));
+    @GetMapping("/getBucket")
+    public ResponseEntity<GymBucket> getBucket(@RequestParam Long gymId) {
+        System.out.println("I got here");
+        GymBucket gymBucket = gymService.getBucket(gymId);
+        return ResponseEntity.ok(gymBucket);
 
-        Gym gym = gymService.getGymByUserId(manager);
-        return ResponseEntity.ok(gymMapper.toDTO(gym));
+
     }
-
 }
