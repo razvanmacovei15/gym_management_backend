@@ -49,6 +49,7 @@ public class GymService implements GymServiceInterface {
     }
 
     @Override
+
     public GymBucket getBucket(Long gymId) {
         Gym gym = gymRepo.findById(gymId).orElseThrow(() -> new IllegalArgumentException("Gym not found"));
         GymBucket bucket = GymBucket.builder().gymName(gym.getName()).gymId(gym.getGymId()).build();

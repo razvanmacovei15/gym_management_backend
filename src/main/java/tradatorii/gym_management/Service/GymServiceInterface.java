@@ -12,6 +12,7 @@ public interface GymServiceInterface {
     Gym getGymById(Long id);
     List<Gym> getAllGyms();
     List<User> getManagersByGymIds(List<Long> gymIds);
+
     GymBucket getBucket(Long gymId);
 
     DashBoard getDashBoard();

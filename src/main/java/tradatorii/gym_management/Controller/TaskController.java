@@ -72,11 +72,12 @@ public class TaskController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<TaskDTO> updateTask(@RequestParam Long taskId, @RequestBody TaskDTO taskDTO)
+    public ResponseEntity<TaskDTO> updateTask(@RequestParam(required = false) Long taskId, @RequestBody TaskDTO taskDTO)
     {
-        System.out.println("TaskDTO: " + taskDTO);
+        if (taskId == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
 
-        // Get the existing task from the database
         Task existingTask = taskService.getTaskById(taskId);
 
         // Update the basic properties of the task
@@ -104,7 +105,6 @@ public class TaskController {
 
         // Convert back to DTO and return
         TaskDTO updatedTaskDTO = taskMapper.mapFrom(updatedTask);
-        System.out.println(updatedTaskDTO);
 
         return ResponseEntity.ok(updatedTaskDTO);
 
@@ -161,5 +161,10 @@ public class TaskController {
         minioService.deleteFile(taskBucket, fileName);
     }
 
+    @GetMapping("/manager")
+    public ResponseEntity<List<TaskDTO>> getTasksByGymId(@RequestParam Long userId) {
+        List<Task> tasks = taskService.getTasksByManagerUserId(userId);
+        return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
+    }
 
 }

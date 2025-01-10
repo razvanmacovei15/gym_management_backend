@@ -16,6 +16,8 @@ import tradatorii.gym_management.Mappers.UserMapper;
 import tradatorii.gym_management.Repo.GymRepo;
 import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.GymServiceInterface;
+import tradatorii.gym_management.Service.TaskServiceInterface;
+import tradatorii.gym_management.Service.UserServiceInterface;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,20 +25,18 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/gyms")
 @AllArgsConstructor
+
 public class GymController {
     private final GymServiceInterface gymService;
-
+    private final UserServiceInterface userService;
     private final GymMapper gymMapper;
     private final UserMapper userMapper;
-    @Autowired
-    private final GymRepo gymRepository;
-    @Autowired
-    private final UserRepo userRepository;
+
 
     @PostMapping("/create")
     public ResponseEntity<String> createGym(@RequestBody GymDTO gymDTO) {
         // Find manager by ID
-        User manager = userRepository.findById(gymDTO.getManagerId())
+        User manager = userService.getById(gymDTO.getManagerId())
                 .orElseThrow(() -> new IllegalArgumentException("Manager not found"));
 
         // Validate manager role
@@ -46,7 +46,7 @@ public class GymController {
 
         // Map DTO to Gym entity and save
         Gym gym = gymMapper.fromDTO(gymDTO, manager);
-        gymRepository.save(gym);
+        gymService.save(gym);
 
         return ResponseEntity.ok("Gym created successfully with manager ID: " + manager.getUserId());
     }
@@ -54,7 +54,9 @@ public class GymController {
     @GetMapping("/all")
     public ResponseEntity<List<GymDTO>> getAllGyms() {
         List<Gym> gyms = gymService.getAllGyms();
+
         List<GymDTO> gymDTOs = gyms.stream().map(gymMapper::toDTO).collect(Collectors.toList());
+
         return ResponseEntity.ok(gymDTOs);
     }
 
@@ -77,6 +79,7 @@ public class GymController {
         System.out.println("I got here");
         GymBucket gymBucket = gymService.getBucket(gymId);
         return ResponseEntity.ok(gymBucket);
+
 
     }
 }

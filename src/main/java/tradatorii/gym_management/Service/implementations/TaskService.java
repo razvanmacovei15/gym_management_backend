@@ -119,4 +119,13 @@ public class TaskService implements TaskServiceInterface {
         return minioService.createBucket(bucketName);
     }
 
+    @Override
+    public List<Task> getTasksByGym(Gym gym) {
+        return taskRepo.findAllTasksByGym(gym);
+    }
+
+    public List<Task> getTasksByManagerUserId(Long userId) {
+        return taskRepo.findAllTasksByManagerUserId(userId);
+    }
+
 }

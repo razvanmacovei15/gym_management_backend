@@ -31,6 +31,6 @@ public class Gym {
     private User manager;
 
     @ManyToMany(mappedBy = "gymSet")
-    private Set<Task> taskSet=new HashSet<>();
+    private Set<Task> taskSet = new HashSet<>();
 
 }
