@@ -76,7 +76,6 @@ public class GymController {
 
     @GetMapping("/getBucket")
     public ResponseEntity<GymBucket> getBucket(@RequestParam Long gymId) {
-        System.out.println("I got here");
         GymBucket gymBucket = gymService.getBucket(gymId);
         return ResponseEntity.ok(gymBucket);
 

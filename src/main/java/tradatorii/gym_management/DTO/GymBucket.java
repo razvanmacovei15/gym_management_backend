@@ -18,7 +18,10 @@ public class GymBucket {
     String gymName;
     Integer totalTasks;
     Integer completedTasks;
-    Integer pendingTasks;
+    Integer toDoTasks;
+    Integer backlogTasks;
+    Integer inProgressTasks;
+    Integer cancelledTasks;
     List<TaskDTO> tasks;
 
 

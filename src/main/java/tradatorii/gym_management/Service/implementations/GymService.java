@@ -54,15 +54,23 @@ public class GymService implements GymServiceInterface {
         Gym gym = gymRepo.findById(gymId).orElseThrow(() -> new IllegalArgumentException("Gym not found"));
         GymBucket bucket = GymBucket.builder().gymName(gym.getName()).gymId(gym.getGymId()).build();
         Set<Task> tasks = gym.getTaskSet();
-        System.out.println(tasks);
         List<TaskDTO> taskDTOS = tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList());
-        System.out.println(taskDTOS);
         bucket.setTasks(taskDTOS);
+
         bucket.setTotalTasks(gym.getTaskSet().size());
+
         Set<Task> completedTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.DONE)).collect(Collectors.toSet());
-        Set<Task> pendingTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.IN_PROGRESS)).collect(Collectors.toSet());
+        Set<Task> toDoTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.IN_PROGRESS)).collect(Collectors.toSet());
+        Set<Task> backLogTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.BACKLOG)).collect(Collectors.toSet());
+        Set<Task> cancelledTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.CANCELLED)).collect(Collectors.toSet());
+        Set<Task> inProgressTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.IN_PROGRESS)).collect(Collectors.toSet());
+
         bucket.setCompletedTasks(completedTasks.size());
-        bucket.setPendingTasks(pendingTasks.size());
+        bucket.setToDoTasks(toDoTasks.size());
+        bucket.setBacklogTasks(backLogTasks.size());
+        bucket.setInProgressTasks(inProgressTasks.size());
+        bucket.setCancelledTasks(cancelledTasks.size());
+
         return bucket;
     }
 
