@@ -78,7 +78,12 @@ public class GymController {
     public ResponseEntity<GymBucket> getBucket(@RequestParam Long gymId) {
         GymBucket gymBucket = gymService.getBucket(gymId);
         return ResponseEntity.ok(gymBucket);
+    }
 
+    @GetMapping("/getGymByUserId")
+    public ResponseEntity<GymDTO> getGymByUserId(@RequestParam Long userId) {
+        GymDTO gym = gymService.getGymByUserId(userId);
 
+        return ResponseEntity.ok(gym);
     }
 }
