@@ -17,5 +17,7 @@ public interface MinioService {
     String createBucket(String bucketName);
     void deleteBucket(String bucketName);
     List<String> getAllFiles(String bucketName);
+
+
     ResponseEntity<InputStreamResource> downloadObject(String taskBucket, String fileName);
 }

@@ -62,6 +62,7 @@ public class TaskController {
     public ResponseEntity<List<TaskDTO>> getAllTasks()
     {
         List<Task> tasks = taskService.findAllOrderByCreatedAtDesc();
+//        taskService.openTheGates();
         return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
     }
 
@@ -154,6 +155,13 @@ public class TaskController {
         return minioService.downloadObject(taskBucket, fileName);
     }
 
+    @GetMapping("/getFile")
+    public ResponseEntity<String> getFile(@RequestParam Long taskId, @RequestParam String fileName) {
+        Task task = taskService.getTaskById(taskId);
+        String taskBucket = task.getTaskBucket();
+        return ResponseEntity.ok(minioService.getFile(taskBucket, fileName));
+    }
+
     @DeleteMapping("/deleteFile")
     public void deleteFile(@RequestParam Long taskId, @RequestParam String fileName) {
         Task task = taskService.getTaskById(taskId);
@@ -166,5 +174,7 @@ public class TaskController {
         List<Task> tasks = taskService.getTasksByManagerUserId(userId);
         return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
     }
+
+
 
 }

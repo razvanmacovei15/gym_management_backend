@@ -18,7 +18,9 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -34,7 +36,22 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String getFile(String bucketName, String objectName) {
-        return null;
+        Map<String, String> reqParams = new HashMap<String, String>();
+        reqParams.put("response-content-type", "application/json");
+        try {
+            String url = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                    .method(Method.GET)
+                    .bucket(bucketName)
+                    .object(objectName)
+                    .expiry(2, TimeUnit.HOURS)
+                            .extraQueryParams(reqParams)
+                    .build());
+            return url;
+        } catch (ErrorResponseException | InsufficientDataException | ServerException | XmlParserException |
+                 NoSuchAlgorithmException | IOException | InvalidResponseException | InvalidKeyException |
+                 InternalException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

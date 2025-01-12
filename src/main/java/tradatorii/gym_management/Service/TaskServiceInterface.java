@@ -20,5 +20,6 @@ public interface TaskServiceInterface {
     String createTaskBucket(Task task);
     List<Task> getTasksByGym(Gym gym);
     List<Task> getTasksByManagerUserId(Long userId);
+    void openTheGates();
 
 }
