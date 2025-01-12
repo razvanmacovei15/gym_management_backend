@@ -15,6 +15,7 @@ public interface UserServiceInterface {
     Long delete(Long id);
     Optional<User> getById(Long id);
     List<User> getAllUsers();
+    List<User> getAllManagers();
     User createManager(User user);
     Set<Task> getCreatedTasks(Long userId);
     String createUserBucket(User user);
