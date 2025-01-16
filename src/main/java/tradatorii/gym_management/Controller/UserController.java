@@ -45,7 +45,7 @@ public class UserController {
     @GetMapping
     public List<UserDTO> getAllUsers()
     {
-        System.out.println("sunt aici");
+
         List<User> users = this.userService.getAllUsers();
         return userMapper.toDTOList(users);
     }

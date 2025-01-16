@@ -60,7 +60,7 @@ public class GymService implements GymServiceInterface {
         GymBucket bucket = GymBucket.builder().gymName(gym.getName()).gymId(gym.getGymId()).build();
         Set<Task> tasks = gym.getTaskSet();
         List<TaskDTO> taskDTOS = tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList());
-//        bucket.setTasks(taskDTOS);
+
 
         bucket.setTotalTasks(gym.getTaskSet().size());
 
