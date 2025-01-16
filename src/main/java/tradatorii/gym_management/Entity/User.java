@@ -63,7 +63,7 @@ public class User implements UserDetails {
     private String profilePhotoObjectName;
 
     @OneToOne(mappedBy = "manager")
-    private Gym gym; // Each manager can be linked to one gym
+    private Gym gym;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

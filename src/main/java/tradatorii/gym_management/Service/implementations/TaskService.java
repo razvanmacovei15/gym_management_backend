@@ -171,21 +171,12 @@ public class TaskService implements TaskServiceInterface {
         List<User> managers = userService.getAllManagers();
         List<Category> categories = Arrays.asList(Category.values());
         List<Status> statuses = Arrays.asList(Status.values());
-        System.out.println("statuses" + statuses);
         List<String> priorities = Arrays.asList("HIGH", "LOW");
         Random random = new Random();
 
         Status status = statuses.get(random.nextInt(statuses.size()));
-        System.out.println(statuses.size());
-        System.out.println("status" + status);
-
-
-
 
         for(User user : managers){
-
-
-
 
             for (int i = 0; i < PROBLEM_TITLES.length; i++) {
 
@@ -197,7 +188,6 @@ public class TaskService implements TaskServiceInterface {
                 for(int j = 0; j < random.nextInt(3) + 1; j++) {
                     if (!randomUserPool.isEmpty()) {
                         User randomUser = randomUserPool.get(new Random().nextInt(randomUserPool.size()));
-                        System.out.println("Current User: " + user.getName() + ", Random Pick: " + randomUser.getName());
                         usersToAdd.add(randomUser);
                     }
                 }
@@ -207,20 +197,18 @@ public class TaskService implements TaskServiceInterface {
                 for(int j = 0; j < random.nextInt(3) + 1; j++) {
                     if (!gyms.isEmpty()) {
                         Gym randomGym = gyms.get(new Random().nextInt(gyms.size()));
-                        System.out.println("Current User: " + user.getName() + ", Random Pick: " + randomGym.getName());
                         gymsToAdd.add(randomGym);
                     }
                 }
 
                 Status randomStatus = statuses.get(random.nextInt(statuses.size()));
-                System.out.println("randomStatus" + randomStatus);
 
                 List<UserDTO> userDTOs = usersToAdd.stream()
-                        .map(userMapper::toDTO)  // Use your existing toDTO method
+                        .map(userMapper::toDTO)
                         .collect(Collectors.toList());
 
                 List<GymDTO> gymDTOs = gymsToAdd.stream()
-                        .map(gymMapper::toDTO)  // Use your existing toDTO method
+                        .map(gymMapper::toDTO)
                         .collect(Collectors.toList());
 
                 TaskDTO dto = TaskDTO.builder()
@@ -229,7 +217,7 @@ public class TaskService implements TaskServiceInterface {
                         .description(PROBLEM_DESCRIPTIONS[i])
                         .deadline(LocalDate.now().plusDays(random.nextInt(7)).toString())
                         .priority(priorities.get(random.nextInt(priorities.size())))
-                        .status(randomStatus)  // Correctly set random status
+                        .status(randomStatus)
                         .users(userDTOs)
                         .gyms(gymDTOs)
                         .build();
@@ -242,7 +230,7 @@ public class TaskService implements TaskServiceInterface {
 
                 String taskBucket = this.createTaskBucket(task);
                 task.setTaskBucket(taskBucket);
-                System.out.println("taskcreated with status: " + task.getStatus());
+
             }
         }
 
