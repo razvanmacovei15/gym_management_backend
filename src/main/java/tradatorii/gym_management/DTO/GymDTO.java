@@ -7,6 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class GymDTO {
     private Long id;
     private String name;

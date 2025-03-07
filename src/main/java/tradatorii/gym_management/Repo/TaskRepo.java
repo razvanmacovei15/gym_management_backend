@@ -8,7 +8,7 @@ import tradatorii.gym_management.Entity.Task;
 import java.util.List;
 
 public interface TaskRepo extends JpaRepository<Task,Long> {
-    List<Task> findAllByOrderByCreatedAt();
+    List<Task> findAllByOrderByCreatedAtDesc();
     @Query("SELECT t FROM Task t JOIN t.gymSet g WHERE g.gymId = :gymId")
     List<Task> findTasksByGymId(Long gymId);
     @Query("SELECT t FROM Task t JOIN t.gymSet g WHERE g = :gym")
