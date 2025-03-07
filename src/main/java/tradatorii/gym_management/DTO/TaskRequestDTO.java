@@ -10,6 +10,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@ToString
 public class TaskRequestDTO {
     private TaskDTO taskDTO;
     private Set<UserDTO> users;

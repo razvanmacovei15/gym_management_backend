@@ -9,6 +9,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 public class UserDTO {
     private Long id;
     private String name;
