@@ -67,17 +67,25 @@ public class SecurityConfiguration {
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        // Creates a new CorsConfiguration instance to set allowed origins, methods, and headers
         CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(List.of("http://localhost:8020/")); // Specifies allowed origins (domains) for CORS requests
-        configuration.addAllowedOriginPattern("*"); // Allow all origins (use addAllowedOrigin() for specific origins)
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // Specifies allowed HTTP methods
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specifies allowed HTTP headers in requests
-        configuration.setAllowCredentials(true); // Enables credentials (e.g., cookies) for CORS requests
-        // Registers the CORS configuration for all paths in the application
+
+        // Allow specific frontend origin instead of "*"
+        configuration.setAllowedOrigins(List.of("http://localhost:8020")); // Set exact origin
+
+        // Allow standard HTTP methods
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+
+        // Allow all headers (fix for potential CORS issues)
+        configuration.setAllowedHeaders(List.of("*"));
+
+        // Allow credentials (important if using authentication tokens or cookies)
+        configuration.setAllowCredentials(true);
+
+        // Apply CORS configuration to all endpoints
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }
+
 }
