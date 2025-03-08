@@ -70,7 +70,7 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Allow specific frontend origin instead of "*"
-        configuration.setAllowedOrigins(List.of("http://localhost:8020/")); // Set exact origin
+        configuration.setAllowedOrigins(List.of("http://localhost:8020/", "https://razvanmacovei15.github.io/gymapp/")); // Set exact origin
 
         // Allow standard HTTP methods
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
