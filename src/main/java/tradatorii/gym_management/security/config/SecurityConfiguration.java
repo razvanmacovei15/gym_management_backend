@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configures access rules for different request patterns
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/hello", "/hello-page").permitAll() // Allow public access
                         .requestMatchers("/auth/login", "/auth/register").permitAll() // Public endpoints
                         .requestMatchers("/auth/me").authenticated() // Secure endpoint
                         .anyRequest().authenticated()
