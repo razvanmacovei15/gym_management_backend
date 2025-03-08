@@ -48,11 +48,28 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDTO loginUserDto) {
 
+        System.out.println("🔍 Login request received: " + loginUserDto.getEmail());
+
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
+
+        if (authenticatedUser == null) {
+            System.out.println("❌ Authentication failed: User not found or incorrect credentials.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        System.out.println("✅ User authenticated: " + authenticatedUser.getUsername());
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
+        if (jwtToken == null || jwtToken.isEmpty()) {
+            System.out.println("❌ JWT Token generation failed!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+        System.out.println("✅ JWT Token generated: " + jwtToken);
+
         String pUrl = userService.generatePreSignedUrl(authenticatedUser);
+        System.out.println("✅ PreSigned URL generated: " + pUrl);
 
         LoginResponse loginResponse = LoginResponse.builder()
                 .token(jwtToken)
@@ -61,8 +78,11 @@ public class AuthenticationController {
                 .preSignedUrl(pUrl)
                 .build();
 
+        System.out.println("✅ Login response successfully created!");
+
         return ResponseEntity.ok(loginResponse);
     }
+
 
     @GetMapping("/me")
     public ResponseEntity<LoginResponse> verifyToken(
