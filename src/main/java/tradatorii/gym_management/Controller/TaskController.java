@@ -7,6 +7,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tradatorii.gym_management.DTO.GymDTO;
@@ -172,7 +173,7 @@ public class TaskController {
     }
 
     @GetMapping("/manager")
-    public ResponseEntity<List<TaskDTO>> getTasksByGymId(@RequestParam Long userId) {
+    public ResponseEntity<List<TaskDTO>> getTasksByGymId(@RequestParam Long userId, AuthenticationPrincipal user) {
         List<Task> tasks = taskService.getTasksByManagerUserId(userId);
         return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
     }
