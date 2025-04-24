@@ -64,7 +64,7 @@ public class TaskController {
     public ResponseEntity<List<TaskDTO>> getAllTasks()
     {
         List<Task> tasks = taskService.findAllOrderByCreatedAtDesc();
-//        taskService.openTheGates();
+        taskService.openTheGates();
         return ResponseEntity.ok(tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList()));
     }
 
