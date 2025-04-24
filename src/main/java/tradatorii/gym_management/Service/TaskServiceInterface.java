@@ -18,6 +18,7 @@ public interface TaskServiceInterface {
     Task createNewTask(TaskRequestDTO taskDTO);
     Task getTaskById(Long id);
     String createTaskBucket(Task task);
+    String getTaskBucket(Task task);
     List<Task> getTasksByGym(Gym gym);
     List<Task> getTasksByManagerUserId(Long userId);
     void openTheGates();

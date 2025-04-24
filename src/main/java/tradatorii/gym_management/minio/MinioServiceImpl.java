@@ -57,6 +57,9 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public void uploadFile(String bucketName, String objectName, MultipartFile file) throws Exception {
         try (InputStream inputStream = file.getInputStream()) {
+            if (!bucketExists(bucketName)) {
+                createBucket(bucketName);
+            }
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
@@ -71,6 +74,9 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public String uploadTaskFile(Task task, MultipartFile file) throws Exception {
         String bucketName = task.getTaskBucket();
+        if(!bucketExists(bucketName)) {
+            createBucket(bucketName);
+        }
         String objectName = file.getOriginalFilename();
         try (InputStream inputStream = file.getInputStream()) {
             minioClient.putObject(
@@ -132,7 +138,10 @@ public class MinioServiceImpl implements MinioService {
                     filenames.add(item.objectName());
                 }
             } else {
+                // Handle the case where the bucket does not exist
                 System.out.println("Bucket not found.");
+                createBucket(bucketName);
+                return filenames;
             }
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
@@ -140,6 +149,17 @@ public class MinioServiceImpl implements MinioService {
             throw new RuntimeException(e);
         }
         return filenames;
+    }
+
+    @Override
+    public boolean bucketExists(String bucketName) {
+        try {
+            return minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | XmlParserException |
+                 ServerException | NoSuchAlgorithmException | IOException | InvalidResponseException |
+                 InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -166,6 +186,15 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String generatePreSignedUrl(String bucketName, String objectName) throws Exception {
+
+        // Check if the bucket exists
+        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        if (!found) {
+            // Handle the case where the bucket does not exist
+            System.out.println("Bucket not found.");
+            createBucket(bucketName);
+            return null;
+        }
         return minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .bucket(bucketName)

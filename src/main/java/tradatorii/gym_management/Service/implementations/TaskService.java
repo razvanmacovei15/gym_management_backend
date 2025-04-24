@@ -143,7 +143,7 @@ public class TaskService implements TaskServiceInterface {
                 .description(taskDTO.getTaskDTO().getDescription())
                 .deadline(taskDTO.getTaskDTO().getDeadline())
                 .priority(taskDTO.getTaskDTO().getPriority())
-                .status(Status.TO_DO) // Default status
+                .status(taskDTO.getTaskDTO().getStatus()) // Default status
                 .build();
 
         // Fetch Users and Set to Task
@@ -246,6 +246,18 @@ public class TaskService implements TaskServiceInterface {
     @Override
     public String createTaskBucket(Task task) {
         String bucketName = "task-" + task.getTaskId() + "-bucket";
+        if(minioService.bucketExists(bucketName)) {
+            return bucketName;
+        }
+        return minioService.createBucket(bucketName);
+    }
+
+    @Override
+    public String getTaskBucket(Task task) {
+        String bucketName = "task-" + task.getTaskId() + "-bucket";
+        if(minioService.bucketExists(bucketName)) {
+            return bucketName;
+        }
         return minioService.createBucket(bucketName);
     }
 

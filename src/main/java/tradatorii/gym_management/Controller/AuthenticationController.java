@@ -35,7 +35,7 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDTO registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
-
+        System.out.println("Registered user: " + registeredUser.toString());
         String userBucket = userService.createUserBucket(registeredUser); //TODO maybe move this into the minio service
         registeredUser.setUserBucket(userBucket);
         userService.setDefaultProfilePhoto(registeredUser);
