@@ -167,6 +167,7 @@ public class TaskService implements TaskServiceInterface {
     }
     @Override
     public void openTheGates() {
+        System.out.println("Opening the gates");
         List<Gym> gyms = gymService.getAllGyms();
         List<User> managers = userService.getAllManagers();
         List<Category> categories = Arrays.asList(Category.values());
