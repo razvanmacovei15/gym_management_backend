@@ -143,7 +143,7 @@ public class TaskService implements TaskServiceInterface {
                 .description(taskDTO.getTaskDTO().getDescription())
                 .deadline(taskDTO.getTaskDTO().getDeadline())
                 .priority(taskDTO.getTaskDTO().getPriority())
-                .status(taskDTO.getTaskDTO().getStatus()) // Default status
+                .status(Status.TO_DO) // Default status
                 .build();
 
         // Fetch Users and Set to Task
