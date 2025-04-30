@@ -5,6 +5,7 @@ import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MinioServiceImpl implements MinioService {
 
     private final MinioClient minioClient;
@@ -186,22 +188,24 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String generatePreSignedUrl(String bucketName, String objectName) throws Exception {
+        log.info("MinioServiceImpl: Generating URL for {}/{}", bucketName, objectName);
 
-        // Check if the bucket exists
         boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
         if (!found) {
-            // Handle the case where the bucket does not exist
-            System.out.println("Bucket not found.");
+            log.warn("Bucket '{}' not found. Creating it...", bucketName);
             createBucket(bucketName);
             return null;
         }
-        return minioClient.getPresignedObjectUrl(
+
+        String url = minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .bucket(bucketName)
                         .object(objectName)
                         .method(Method.GET)
-                        .expiry(2, TimeUnit.HOURS) // URL valid for 2 hours
+                        .expiry(2, TimeUnit.HOURS)
                         .build()
         );
+        log.info("Generated presigned URL: {}", url);
+        return url;
     }
 }
