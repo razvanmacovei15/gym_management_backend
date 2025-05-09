@@ -1,6 +1,7 @@
 package tradatorii.gym_management.Service.implementations;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tradatorii.gym_management.DTO.DashboardDTO;
 import tradatorii.gym_management.DTO.GymStatistics;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 
 @RequiredArgsConstructor
-
+@Slf4j
 @Service
 public class GymService implements GymServiceInterface {
     private final GymRepo gymRepo;
@@ -71,8 +72,10 @@ public class GymService implements GymServiceInterface {
     @Override
     public DashboardDTO getDashBoard() {
         List<Gym> gyms = gymRepo.findAll();
+        log.info("Gyms: {}", gyms);
         List<GymStatistics> gymStatistics = gyms.stream()
                 .map(gym -> getGymStatistics(gym.getGymId())).collect(Collectors.toList());
+        log.info("Gym Statistics: {}", gymStatistics);
         return DashboardDTO.builder().allGymsStatistics(gymStatistics).totalGyms(gyms.size()).build();
     }
 
