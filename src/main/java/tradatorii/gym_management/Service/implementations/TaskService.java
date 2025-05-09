@@ -165,6 +165,24 @@ public class TaskService implements TaskServiceInterface {
         // Save and return the task
         return taskRepo.save(task);
     }
+
+    @Override
+    public Task createNewTask(TaskDTO taskDTO) {
+        Task task  = Task.builder()
+                .title(taskDTO.getTitle())
+                .category(taskDTO.getCategory())
+                .description(taskDTO.getDescription())
+                .deadline(taskDTO.getDeadline())
+                .priority(taskDTO.getPriority())
+                .status(Status.TO_DO)
+                .build();
+        Set<User> responsibleManagers = new HashSet<>();
+        for(UserDTO userDTO : taskDTO.getUsers()){
+            Optional<User> user = userService.getById(userDTO.getId());
+        }
+        return null;
+    }
+
     @Override
     public void openTheGates() {
         List<Gym> gyms = gymService.getAllGyms();

@@ -11,6 +11,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @ToString
+//todo remove this class
 public class TaskRequestDTO {
     private TaskDTO taskDTO;
     private Set<UserDTO> users;

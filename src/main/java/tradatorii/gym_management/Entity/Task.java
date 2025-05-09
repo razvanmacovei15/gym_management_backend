@@ -36,7 +36,7 @@ public class Task {
     @Column(name="description",nullable=true,unique=false)
     private String description;
 
-    @Column(name="deadline",nullable=true,unique=false)
+    @Column(name="deadline",nullable=true,unique=false, columnDefinition = "TEXT")
     private String deadline;
 
     @ManyToOne

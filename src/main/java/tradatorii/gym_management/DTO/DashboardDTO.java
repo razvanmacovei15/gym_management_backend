@@ -10,9 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DashBoard {
+public class DashboardDTO {
 
     Integer totalGyms;
-    List<GymBucket> bucketList;
+    List<GymStatistics> allGymsStatistics;
 
 }

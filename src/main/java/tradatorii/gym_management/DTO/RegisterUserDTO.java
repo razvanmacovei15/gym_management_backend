@@ -11,7 +11,6 @@ import tradatorii.gym_management.Enums.Role;
 @Setter
 @Getter
 @AllArgsConstructor
-
 public class RegisterUserDTO {
     private String name;
     private String email;

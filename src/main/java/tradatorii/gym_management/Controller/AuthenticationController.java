@@ -22,15 +22,14 @@ public class AuthenticationController {
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
     private final UserService userService;
-    private final MinioService minioService;
 
-    public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService, UserService userService, MinioService minioService) {
+    public AuthenticationController(UserMapper userMapper, JwtService jwtService, AuthenticationService authenticationService, UserService userService) {
         this.userMapper = userMapper;
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
         this.userService = userService;
-        this.minioService = minioService;
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody RegisterUserDTO registerUserDto) {

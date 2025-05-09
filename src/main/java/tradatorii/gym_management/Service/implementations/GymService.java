@@ -1,12 +1,10 @@
 package tradatorii.gym_management.Service.implementations;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tradatorii.gym_management.DTO.DashBoard;
-import tradatorii.gym_management.DTO.GymBucket;
+import tradatorii.gym_management.DTO.DashboardDTO;
+import tradatorii.gym_management.DTO.GymStatistics;
 import tradatorii.gym_management.DTO.GymDTO;
-import tradatorii.gym_management.DTO.TaskDTO;
 import tradatorii.gym_management.Entity.Gym;
 import tradatorii.gym_management.Entity.Task;
 import tradatorii.gym_management.Entity.User;
@@ -18,8 +16,8 @@ import tradatorii.gym_management.Service.GymServiceInterface;
 import tradatorii.gym_management.Service.UserServiceInterface;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -55,35 +53,27 @@ public class GymService implements GymServiceInterface {
 
     @Override
 
-    public GymBucket getBucket(Long gymId) {
+    public GymStatistics getGymStatistics(Long gymId) {
         Gym gym = gymRepo.findById(gymId).orElseThrow(() -> new IllegalArgumentException("Gym not found"));
-        GymBucket bucket = GymBucket.builder().gymName(gym.getName()).gymId(gym.getGymId()).build();
-        Set<Task> tasks = gym.getTaskSet();
-        List<TaskDTO> taskDTOS = tasks.stream().map(taskMapper::mapFrom).collect(Collectors.toList());
-
-
+        GymStatistics bucket = GymStatistics.builder().gymName(gym.getName()).gymId(gym.getGymId()).build();
         bucket.setTotalTasks(gym.getTaskSet().size());
+        Map<Status, List<Task>> tasksByStatus = gym.getTaskSet().stream().collect(Collectors.groupingBy(Task::getStatus));
 
-        Set<Task> completedTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.DONE)).collect(Collectors.toSet());
-        Set<Task> toDoTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.TO_DO)).collect(Collectors.toSet());
-        Set<Task> backLogTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.BACKLOG)).collect(Collectors.toSet());
-        Set<Task> cancelledTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.CANCELLED)).collect(Collectors.toSet());
-        Set<Task> inProgressTasks = gym.getTaskSet().stream().filter(task -> task.getStatus().equals(Status.IN_PROGRESS)).collect(Collectors.toSet());
-
-        bucket.setCompletedTasks(completedTasks.size());
-        bucket.setToDoTasks(toDoTasks.size());
-        bucket.setBacklogTasks(backLogTasks.size());
-        bucket.setInProgressTasks(inProgressTasks.size());
-        bucket.setCancelledTasks(cancelledTasks.size());
+        bucket.setCompletedTasks(tasksByStatus.get(Status.DONE).size());
+        bucket.setToDoTasks(tasksByStatus.get(Status.TO_DO).size());
+        bucket.setBacklogTasks(tasksByStatus.get(Status.BACKLOG).size());
+        bucket.setInProgressTasks(tasksByStatus.get(Status.IN_PROGRESS).size());
+        bucket.setCancelledTasks(tasksByStatus.get(Status.CANCELLED).size());
 
         return bucket;
     }
 
     @Override
-    public DashBoard getDashBoard() {
+    public DashboardDTO getDashBoard() {
         List<Gym> gyms = gymRepo.findAll();
-        List<GymBucket> gymBuckets = gyms.stream().map(gym -> getBucket(gym.getGymId())).collect(Collectors.toList());
-        return DashBoard.builder().bucketList(gymBuckets).totalGyms(gyms.size()).build();
+        List<GymStatistics> gymStatistics = gyms.stream()
+                .map(gym -> getGymStatistics(gym.getGymId())).collect(Collectors.toList());
+        return DashboardDTO.builder().allGymsStatistics(gymStatistics).totalGyms(gyms.size()).build();
     }
 
     @Override

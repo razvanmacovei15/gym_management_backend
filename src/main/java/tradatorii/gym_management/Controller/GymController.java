@@ -1,11 +1,10 @@
 package tradatorii.gym_management.Controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tradatorii.gym_management.DTO.DashBoard;
-import tradatorii.gym_management.DTO.GymBucket;
+import tradatorii.gym_management.DTO.DashboardDTO;
+import tradatorii.gym_management.DTO.GymStatistics;
 import tradatorii.gym_management.DTO.GymDTO;
 import tradatorii.gym_management.DTO.UserDTO;
 import tradatorii.gym_management.Entity.Gym;
@@ -13,10 +12,7 @@ import tradatorii.gym_management.Entity.User;
 import tradatorii.gym_management.Enums.Role;
 import tradatorii.gym_management.Mappers.GymMapper;
 import tradatorii.gym_management.Mappers.UserMapper;
-import tradatorii.gym_management.Repo.GymRepo;
-import tradatorii.gym_management.Repo.UserRepo;
 import tradatorii.gym_management.Service.GymServiceInterface;
-import tradatorii.gym_management.Service.TaskServiceInterface;
 import tradatorii.gym_management.Service.UserServiceInterface;
 
 import java.util.List;
@@ -31,6 +27,17 @@ public class GymController {
     private final UserServiceInterface userService;
     private final GymMapper gymMapper;
     private final UserMapper userMapper;
+
+    // /gyms -> GET -> get all gyms
+    // /gyms -> POST -> create a gym
+    // /gyms/{gymId} -> GET -> Get a gym
+    // /gyms/{gumId} -> PATCH -> Update a gym
+    // /gyms/{gymId} -> DELETE -> Delee a gym
+    // /users/{userId}/gyms -> GET -> what gyms this user has
+    // /users/{userId}/gyms?sortBy= -> GET -> what gyms this user has
+
+
+    // POST, PUT, GET, DELETE
 
 
     @PostMapping("/create")
@@ -70,14 +77,14 @@ public class GymController {
         return ResponseEntity.ok(managersDTO);
     }
     @GetMapping("/dashboard")
-    public ResponseEntity<DashBoard> getDashboard() {
+    public ResponseEntity<DashboardDTO> getDashboard() {
         return ResponseEntity.ok(gymService.getDashBoard());
     }
 
     @GetMapping("/getBucket")
-    public ResponseEntity<GymBucket> getBucket(@RequestParam Long gymId) {
-        GymBucket gymBucket = gymService.getBucket(gymId);
-        return ResponseEntity.ok(gymBucket);
+    public ResponseEntity<GymStatistics> getBucket(@RequestParam Long gymId) {
+        GymStatistics gymStatistics = gymService.getGymStatistics(gymId);
+        return ResponseEntity.ok(gymStatistics);
     }
 
     @GetMapping("/getGymByUserId")

@@ -49,8 +49,7 @@ public class TaskController {
     @PostMapping("/create")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskRequestDTO taskRequestDTO)
     {
-        System.out.println("Creating task");
-        System.out.println(taskRequestDTO);
+        //todo remove taskRequestDTO functionality and add taskDTO
         Task task = taskService.createNewTask(taskRequestDTO);
         String bucket = taskService.createTaskBucket(task);
         task.setTaskBucket(bucket);
