@@ -39,6 +39,7 @@ public class Task {
     @Column(name="deadline",nullable=true,unique=false, columnDefinition = "TEXT")
     private String deadline;
 
+    //proba proba
     @ManyToOne
     @JoinColumn(name="userId")
     private User user;
