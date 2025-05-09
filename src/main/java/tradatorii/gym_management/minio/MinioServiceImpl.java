@@ -111,17 +111,19 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public String createBucket(String bucketName) {
         try {
-            minioClient.makeBucket(
-                    MakeBucketArgs
-                            .builder()
-                            .bucket(bucketName)
-                            .build());
+            boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (!exists) {
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+            } else {
+                log.info("Bucket '{}' already exists, skipping creation.", bucketName);
+            }
             return bucketName;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException("Could not create bucket");
+            log.error("Error while creating bucket '{}': {}", bucketName, e.getMessage(), e);
+            throw new RuntimeException("Could not create bucket", e);
         }
     }
+
 
     @Override
     public void deleteBucket(String bucketName) {
