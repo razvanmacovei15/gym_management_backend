@@ -55,16 +55,33 @@ public class GymService implements GymServiceInterface {
     @Override
 
     public GymStatistics getGymStatistics(Long gymId) {
-        Gym gym = gymRepo.findById(gymId).orElseThrow(() -> new IllegalArgumentException("Gym not found"));
-        GymStatistics bucket = GymStatistics.builder().gymName(gym.getName()).gymId(gym.getGymId()).build();
-        bucket.setTotalTasks(gym.getTaskSet().size());
-        Map<Status, List<Task>> tasksByStatus = gym.getTaskSet().stream().collect(Collectors.groupingBy(Task::getStatus));
+        log.info("Fetching statistics for gym with ID: {}", gymId);
+        Gym gym = gymRepo.findById(gymId).orElseThrow(() -> {
+            log.error("Gym with ID {} not found", gymId);
+            return new IllegalArgumentException("Gym not found");
+        });
 
-        bucket.setCompletedTasks(tasksByStatus.get(Status.DONE).size());
-        bucket.setToDoTasks(tasksByStatus.get(Status.TO_DO).size());
-        bucket.setBacklogTasks(tasksByStatus.get(Status.BACKLOG).size());
-        bucket.setInProgressTasks(tasksByStatus.get(Status.IN_PROGRESS).size());
-        bucket.setCancelledTasks(tasksByStatus.get(Status.CANCELLED).size());
+        log.debug("Gym found: {}", gym);
+        GymStatistics bucket = GymStatistics.builder()
+                .gymName(gym.getName())
+                .gymId(gym.getGymId())
+                .build();
+
+        bucket.setTotalTasks(gym.getTaskSet().size());
+        log.debug("Total tasks for gym {}: {}", gymId, bucket.getTotalTasks());
+
+        Map<Status, List<Task>> tasksByStatus = gym.getTaskSet().stream()
+                .collect(Collectors.groupingBy(Task::getStatus));
+
+        bucket.setCompletedTasks(tasksByStatus.getOrDefault(Status.DONE, List.of()).size());
+        bucket.setToDoTasks(tasksByStatus.getOrDefault(Status.TO_DO, List.of()).size());
+        bucket.setBacklogTasks(tasksByStatus.getOrDefault(Status.BACKLOG, List.of()).size());
+        bucket.setInProgressTasks(tasksByStatus.getOrDefault(Status.IN_PROGRESS, List.of()).size());
+        bucket.setCancelledTasks(tasksByStatus.getOrDefault(Status.CANCELLED, List.of()).size());
+
+        log.debug("Task breakdown for gym {}: Completed: {}, To-Do: {}, Backlog: {}, In-Progress: {}, Cancelled: {}",
+                gymId, bucket.getCompletedTasks(), bucket.getToDoTasks(), bucket.getBacklogTasks(),
+                bucket.getInProgressTasks(), bucket.getCancelledTasks());
 
         return bucket;
     }
