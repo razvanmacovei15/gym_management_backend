@@ -117,7 +117,7 @@ public class UserService implements UserServiceInterface {
 
     public String generatePreSignedUrl(User user) {
         String pUrl = null;
-        if(user.getProfilePhotoObjectName().equals("defaultProfilePhoto.png")){
+        if ("defaultProfilePhoto.png".equals(user.getProfilePhotoObjectName())) {
             try {
                 pUrl = minioService.generatePreSignedUrl("default-values", "defaultProfilePhoto.png");
             } catch (Exception e) {
@@ -132,6 +132,7 @@ public class UserService implements UserServiceInterface {
         }
         return pUrl;
     }
+
 
     @Override
     public String setProfilePhotoObjectName(String objectName, MultipartFile file) {
