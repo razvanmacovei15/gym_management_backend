@@ -185,6 +185,7 @@ public class TaskService implements TaskServiceInterface {
 
     @Override
     public void openTheGates() {
+        System.out.println("Opening the gates");
         List<Gym> gyms = gymService.getAllGyms();
         List<User> managers = userService.getAllManagers();
         List<Category> categories = Arrays.asList(Category.values());
@@ -264,6 +265,18 @@ public class TaskService implements TaskServiceInterface {
     @Override
     public String createTaskBucket(Task task) {
         String bucketName = "task-" + task.getTaskId() + "-bucket";
+        if(minioService.bucketExists(bucketName)) {
+            return bucketName;
+        }
+        return minioService.createBucket(bucketName);
+    }
+
+    @Override
+    public String getTaskBucket(Task task) {
+        String bucketName = "task-" + task.getTaskId() + "-bucket";
+        if(minioService.bucketExists(bucketName)) {
+            return bucketName;
+        }
         return minioService.createBucket(bucketName);
     }
 

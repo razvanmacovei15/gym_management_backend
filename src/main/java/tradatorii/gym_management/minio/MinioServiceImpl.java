@@ -5,6 +5,7 @@ import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MinioServiceImpl implements MinioService {
 
     private final MinioClient minioClient;
@@ -57,6 +59,9 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public void uploadFile(String bucketName, String objectName, MultipartFile file) throws Exception {
         try (InputStream inputStream = file.getInputStream()) {
+            if (!bucketExists(bucketName)) {
+                createBucket(bucketName);
+            }
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
@@ -71,6 +76,9 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public String uploadTaskFile(Task task, MultipartFile file) throws Exception {
         String bucketName = task.getTaskBucket();
+        if(!bucketExists(bucketName)) {
+            createBucket(bucketName);
+        }
         String objectName = file.getOriginalFilename();
         try (InputStream inputStream = file.getInputStream()) {
             minioClient.putObject(
@@ -132,7 +140,10 @@ public class MinioServiceImpl implements MinioService {
                     filenames.add(item.objectName());
                 }
             } else {
+                // Handle the case where the bucket does not exist
                 System.out.println("Bucket not found.");
+                createBucket(bucketName);
+                return filenames;
             }
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
@@ -140,6 +151,17 @@ public class MinioServiceImpl implements MinioService {
             throw new RuntimeException(e);
         }
         return filenames;
+    }
+
+    @Override
+    public boolean bucketExists(String bucketName) {
+        try {
+            return minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | XmlParserException |
+                 ServerException | NoSuchAlgorithmException | IOException | InvalidResponseException |
+                 InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -166,13 +188,24 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String generatePreSignedUrl(String bucketName, String objectName) throws Exception {
-        return minioClient.getPresignedObjectUrl(
+        log.info("MinioServiceImpl: Generating URL for {}/{}", bucketName, objectName);
+
+        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        if (!found) {
+            log.warn("Bucket '{}' not found. Creating it...", bucketName);
+            createBucket(bucketName);
+            return null;
+        }
+
+        String url = minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .bucket(bucketName)
                         .object(objectName)
                         .method(Method.GET)
-                        .expiry(2, TimeUnit.HOURS) // URL valid for 2 hours
+                        .expiry(2, TimeUnit.HOURS)
                         .build()
         );
+        log.info("Generated presigned URL: {}", url);
+        return url;
     }
 }
