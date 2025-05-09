@@ -41,6 +41,15 @@ public class UserController {
         return user;
     }
 
+    @PostMapping("/manager")
+    public User createManager(@RequestBody UserDTO userDTO) {
+        log.info("Received request to create manager: {}", userDTO);
+        User user = userMapper.toEntity(userDTO);
+        this.userService.createManager(user);
+        log.info("Manager created: {}", user);
+        return user;
+    }
+
     @DeleteMapping
     public ResponseEntity<Long> deleteUser(@RequestParam Long id) {
         log.info("Received request to delete user with ID: {}", id);
